@@ -68,13 +68,7 @@ export default function SettingsScreen() {
             value={settings.restSec}
             onCommit={(restSec) => updateSettings({ restSec })}
           />
-          <NumberField
-            label="1회 반복 템포"
-            unit="초"
-            value={settings.tempoSec}
-            onCommit={(tempoSec) => updateSettings({ tempoSec })}
-          />
-          <Sub>템포는 반복 1회에 걸리는 시간입니다. 3초로 두면 3초마다 횟수가 1씩 올라갑니다.</Sub>
+          <Sub>반복 템포(기본 3초)는 운동 중 화면에서 바로 조절할 수 있습니다.</Sub>
         </Card>
 
         <Card style={{ gap: 10 }}>

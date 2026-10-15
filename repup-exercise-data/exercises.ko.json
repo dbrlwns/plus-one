@@ -1,0 +1,1296 @@
+{
+  "version": 1,
+  "license": "Exercise data and images from yuhonas/free-exercise-db (Unlicense, public domain). Korean translations and notes added.",
+  "intensityLegend": {
+    "2": "주동근",
+    "1": "보조근"
+  },
+  "exercises": [
+    {
+      "id": "push-up",
+      "nameKo": "푸쉬업",
+      "nameEn": "Push-Up",
+      "category": "push",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "가슴"
+      ],
+      "secondaryMuscles": [
+        "어깨",
+        "삼두"
+      ],
+      "highlight": [
+        {
+          "slug": "chest",
+          "intensity": 2
+        },
+        {
+          "slug": "deltoids",
+          "intensity": 1
+        },
+        {
+          "slug": "triceps",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "바닥에 엎드려 양손을 약 90cm 간격으로 짚고, 팔을 뻗어 상체를 들어 올린 자세를 유지합니다.",
+        "숨을 들이마시며 가슴이 바닥에 거의 닿을 때까지 몸을 내립니다.",
+        "숨을 내쉬며 가슴을 조이면서 상체를 시작 자세로 밀어 올립니다.",
+        "위에서 잠깐 멈춘 뒤, 원하는 횟수만큼 다시 내려가기를 반복합니다."
+      ],
+      "instructionsEn": [
+        "Lie on the floor face down and place your hands about 36 inches apart while holding your torso up at arms length.",
+        "Next, lower yourself downward until your chest almost touches the floor as you inhale.",
+        "Now breathe out and press your upper body back up to the starting position while squeezing your chest.",
+        "After a brief pause at the top contracted position, you can begin to lower yourself downward again for as many repetitions as needed."
+      ],
+      "noteKo": "원문의 손 간격(약 90cm)은 넓은 편이에요. 어깨너비보다 조금 넓게 잡아도 되고, 손목 보호를 위해 푸쉬업바 사용을 권장합니다.",
+      "images": [
+        "images/push-up/0.jpg",
+        "images/push-up/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Pushups"
+      }
+    },
+    {
+      "id": "decline-push-up",
+      "nameKo": "디클라인 푸쉬업",
+      "nameEn": "Decline Push-Up",
+      "category": "push",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": null,
+      "primaryMuscles": [
+        "가슴"
+      ],
+      "secondaryMuscles": [
+        "어깨",
+        "삼두"
+      ],
+      "highlight": [
+        {
+          "slug": "chest",
+          "intensity": 2
+        },
+        {
+          "slug": "deltoids",
+          "intensity": 1
+        },
+        {
+          "slug": "triceps",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "바닥에 엎드려 양손을 약 90cm 간격으로 짚고, 팔을 뻗어 상체를 들어 올린 뒤 발을 박스나 벤치 위에 올립니다. 이것이 시작 자세입니다.",
+        "숨을 들이마시며 가슴이 바닥에 거의 닿을 때까지 몸을 내립니다.",
+        "숨을 내쉬며 가슴을 조이면서 상체를 시작 자세로 밀어 올립니다.",
+        "위에서 잠깐 멈춘 뒤, 원하는 횟수만큼 다시 내려가기를 반복합니다."
+      ],
+      "instructionsEn": [
+        "Lie on the floor face down and place your hands about 36 inches apart while holding your torso up at arms length. Move your feet up to a box or bench. This will be your starting position.",
+        "Next, lower yourself downward until your chest almost touches the floor as you inhale.",
+        "Now breathe out and press your upper body back up to the starting position while squeezing your chest.",
+        "After a brief pause at the top contracted position, you can begin to lower yourself downward again for as many repetitions as needed."
+      ],
+      "noteKo": "집에서는 의자나 침대에 발을 올려도 됩니다. 발 위치가 높을수록 난이도가 올라가요.",
+      "images": [
+        "images/decline-push-up/0.jpg",
+        "images/decline-push-up/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Decline_Push-Up"
+      }
+    },
+    {
+      "id": "diamond-push-up",
+      "nameKo": "다이아몬드 푸쉬업",
+      "nameEn": "Close-Grip Push-Up",
+      "category": "push",
+      "type": "reps",
+      "level": "intermediate",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "삼두"
+      ],
+      "secondaryMuscles": [
+        "가슴",
+        "어깨"
+      ],
+      "highlight": [
+        {
+          "slug": "triceps",
+          "intensity": 2
+        },
+        {
+          "slug": "chest",
+          "intensity": 1
+        },
+        {
+          "slug": "deltoids",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "바닥에 엎드려 양손을 어깨너비보다 좁게 짚습니다. 팔을 뻗어 상체를 들어 올린 자세를 유지합니다.",
+        "숨을 들이마시며 가슴이 바닥에 거의 닿을 때까지 몸을 내립니다.",
+        "삼두와 가슴 근육 일부를 사용해 상체를 시작 자세로 밀어 올리고 가슴을 조입니다. 이때 숨을 내쉽니다.",
+        "수축된 자세에서 1초 멈춘 뒤, 정해진 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Lie on the floor face down and place your hands closer than shoulder width for a close hand position. Make sure that you are holding your torso up at arms' length.",
+        "Lower yourself until your chest almost touches the floor as you inhale.",
+        "Using your triceps and some of your pectoral muscles, press your upper body back up to the starting position and squeeze your chest. Breathe out as you perform this step.",
+        "After a second pause at the contracted position, repeat the movement for the prescribed amount of repetitions."
+      ],
+      "noteKo": "원문은 좁은 그립 푸쉬업이에요. 다이아몬드 푸쉬업은 양손 엄지·검지로 다이아몬드 모양을 만드는 변형이며, 손목이 불편하면 원문처럼 손을 어깨보다 살짝 좁게만 짚어도 됩니다.",
+      "images": [
+        "images/diamond-push-up/0.jpg",
+        "images/diamond-push-up/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Push-Ups_-_Close_Triceps_Position"
+      }
+    },
+    {
+      "id": "dips",
+      "nameKo": "딥스",
+      "nameEn": "Parallel Bar Dip",
+      "category": "push",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "other",
+      "primaryMuscles": [
+        "삼두"
+      ],
+      "secondaryMuscles": [
+        "가슴",
+        "어깨"
+      ],
+      "highlight": [
+        {
+          "slug": "triceps",
+          "intensity": 2
+        },
+        {
+          "slug": "chest",
+          "intensity": 1
+        },
+        {
+          "slug": "deltoids",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "평행봉 사이에 서서 양손으로 각 봉을 잡고, 살짝 점프해 팔을 완전히 편 시작 자세를 만듭니다.",
+        "팔꿈치를 굽혀 팔이 90도보다 조금 더 굽혀질 때까지 몸을 내립니다. 몸이 흔들리지 않게 하고 내려가는 동안 바른 자세를 유지합니다.",
+        "팔꿈치를 펴면서 반대로 움직여 시작 자세로 몸을 밀어 올립니다.",
+        "원하는 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Stand between a set of parallel bars. Place a hand on each bar, and then take a small jump to help you get into the starting position with your arms locked out.",
+        "Begin by flexing the elbow, lowering your body until your arms break 90 degrees. Avoid swinging, and maintain good posture throughout the descent.",
+        "Reverse the motion by extending the elbow, pushing yourself back up into the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "noteKo": "처음에는 팔꿈치 90도 정도까지만 내려가세요. 상체를 앞으로 숙이면 가슴, 세우면 삼두에 더 자극이 갑니다.",
+      "images": [
+        "images/dips/0.jpg",
+        "images/dips/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Parallel_Bar_Dip"
+      }
+    },
+    {
+      "id": "dumbbell-floor-press",
+      "nameKo": "덤벨 플로어 프레스",
+      "nameEn": "Dumbbell Floor Press",
+      "category": "push",
+      "type": "reps",
+      "level": "intermediate",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "삼두"
+      ],
+      "secondaryMuscles": [
+        "가슴",
+        "어깨"
+      ],
+      "highlight": [
+        {
+          "slug": "triceps",
+          "intensity": 2
+        },
+        {
+          "slug": "chest",
+          "intensity": 1
+        },
+        {
+          "slug": "deltoids",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "양손에 덤벨을 들고 바닥에 눕습니다. 무릎은 굽혀도 됩니다. 덤벨을 위로 완전히 뻗은 상태에서 시작합니다.",
+        "위팔이 바닥에 닿을 때까지 덤벨을 내립니다. 팔꿈치를 몸 쪽으로 붙이면 삼두, 팔을 옆으로 벌리면 가슴에 더 집중할 수 있습니다.",
+        "아래에서 잠깐 멈춘 뒤, 팔꿈치를 펴면서 덤벨을 위로 밀어 올려 모읍니다."
+      ],
+      "instructionsEn": [
+        "Lay on the floor holding dumbbells in your hands. Your knees can be bent. Begin with the weights fully extended above you.",
+        "Lower the weights until your upper arm comes in contact with the floor. You can tuck your elbows to emphasize triceps size and strength, or to focus on your chest angle your arms to the side.",
+        "Pause at the bottom, and then bring the weight together at the top by extending through the elbows."
+      ],
+      "noteKo": null,
+      "images": [
+        "images/dumbbell-floor-press/0.jpg",
+        "images/dumbbell-floor-press/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Dumbbell_Floor_Press"
+      }
+    },
+    {
+      "id": "dumbbell-shoulder-press",
+      "nameKo": "덤벨 숄더프레스",
+      "nameEn": "Dumbbell Shoulder Press",
+      "category": "push",
+      "type": "reps",
+      "level": "intermediate",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "어깨"
+      ],
+      "secondaryMuscles": [
+        "삼두"
+      ],
+      "highlight": [
+        {
+          "slug": "deltoids",
+          "intensity": 2
+        },
+        {
+          "slug": "triceps",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "양손에 덤벨을 들고 등받이가 있는 벤치에 앉습니다. 덤벨을 허벅지 위에 세워 둡니다.",
+        "허벅지 반동을 이용해 덤벨을 하나씩 어깨 높이로 들어 올립니다.",
+        "손목을 돌려 손바닥이 앞을 향하게 합니다. 이것이 시작 자세입니다.",
+        "숨을 내쉬며 덤벨이 위에서 맞닿을 때까지 밀어 올립니다.",
+        "위에서 잠깐 멈춘 뒤, 숨을 들이마시며 천천히 시작 자세로 내립니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "While holding a dumbbell in each hand, sit on a military press bench or utility bench that has back support. Place the dumbbells upright on top of your thighs.",
+        "Now raise the dumbbells to shoulder height one at a time using your thighs to help propel them up into position.",
+        "Make sure to rotate your wrists so that the palms of your hands are facing forward. This is your starting position.",
+        "Now, exhale and push the dumbbells upward until they touch at the top.",
+        "Then, after a brief pause at the top contracted position, slowly lower the weights back down to the starting position while inhaling.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": "등받이 있는 의자에 앉거나 서서 해도 됩니다.",
+      "images": [
+        "images/dumbbell-shoulder-press/0.jpg",
+        "images/dumbbell-shoulder-press/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Dumbbell_Shoulder_Press"
+      }
+    },
+    {
+      "id": "lateral-raise",
+      "nameKo": "사이드 레터럴 레이즈",
+      "nameEn": "Side Lateral Raise",
+      "category": "push",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "어깨"
+      ],
+      "secondaryMuscles": [],
+      "highlight": [
+        {
+          "slug": "deltoids",
+          "intensity": 2
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "덤벨 두 개를 들고 상체를 곧게 세운 채 섭니다. 팔은 몸 옆에 늘어뜨리고 손바닥이 몸을 향하게 합니다. 이것이 시작 자세입니다.",
+        "상체를 고정한 채(반동 없이) 팔꿈치를 살짝 굽히고, 컵에 물을 따르듯 손을 약간 앞으로 기울이며 덤벨을 옆으로 들어 올립니다. 팔이 바닥과 평행이 될 때까지 올리고, 올리면서 숨을 내쉰 뒤 위에서 1초 멈춥니다.",
+        "숨을 들이마시며 천천히 시작 자세로 내립니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Pick a couple of dumbbells and stand with a straight torso and the dumbbells by your side at arms length with the palms of the hand facing you. This will be your starting position.",
+        "While maintaining the torso in a stationary position (no swinging), lift the dumbbells to your side with a slight bend on the elbow and the hands slightly tilted forward as if pouring water in a glass. Continue to go up until you arms are parallel to the floor. Exhale as you execute this movement and pause for a second at the top.",
+        "Lower the dumbbells back down slowly to the starting position as you inhale.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": null,
+      "images": [
+        "images/lateral-raise/0.jpg",
+        "images/lateral-raise/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Side_Lateral_Raise"
+      }
+    },
+    {
+      "id": "overhead-triceps-extension",
+      "nameKo": "오버헤드 트라이셉스 익스텐션",
+      "nameEn": "Standing Dumbbell Triceps Extension",
+      "category": "push",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "삼두"
+      ],
+      "secondaryMuscles": [],
+      "highlight": [
+        {
+          "slug": "triceps",
+          "intensity": 2
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "양발을 어깨너비로 벌리고 서서 덤벨 하나를 양손으로 잡습니다. 천천히 머리 위로 들어 올려 양팔을 완전히 폅니다.",
+        "덤벨이 손바닥에 걸쳐지도록 하고 엄지로 감싸 쥡니다. 손바닥은 천장을 향합니다. 이것이 시작 자세입니다.",
+        "위팔을 머리 옆에 붙이고 팔꿈치를 모아 바닥과 수직으로 유지한 채, 전완이 이두에 닿을 때까지 덤벨을 머리 뒤로 반원을 그리며 내립니다. 위팔은 고정하고 전완만 움직이세요. 이때 숨을 들이마십니다.",
+        "삼두를 사용해 덤벨을 들어 올려 시작 자세로 돌아옵니다. 이때 숨을 내쉽니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "To begin, stand up with a dumbbell held by both hands. Your feet should be about shoulder width apart from each other. Slowly use both hands to grab the dumbbell and lift it over your head until both arms are fully extended.",
+        "The resistance should be resting in the palms of your hands with your thumbs around it. The palm of the hands should be facing up towards the ceiling. This will be your starting position.",
+        "Keeping your upper arms close to your head with elbows in and perpendicular to the floor, lower the resistance in a semicircular motion behind your head until your forearms touch your biceps. Tip: The upper arms should remain stationary and only the forearms should move. Breathe in as you perform this step.",
+        "Go back to the starting position by using the triceps to raise the dumbbell. Breathe out as you perform this step.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": null,
+      "images": [
+        "images/overhead-triceps-extension/0.jpg",
+        "images/overhead-triceps-extension/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Standing_Dumbbell_Triceps_Extension"
+      }
+    },
+    {
+      "id": "pull-up",
+      "nameKo": "풀업",
+      "nameEn": "Pull-Up",
+      "category": "pull",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "광배"
+      ],
+      "secondaryMuscles": [
+        "이두",
+        "등 중앙"
+      ],
+      "highlight": [
+        {
+          "slug": "upper-back",
+          "intensity": 2
+        },
+        {
+          "slug": "biceps",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "손바닥이 앞을 향하게 철봉을 잡습니다. 넓은 그립은 어깨너비보다 넓게, 중간 그립은 어깨너비로, 좁은 그립은 어깨너비보다 좁게 잡습니다.",
+        "선택한 그립으로 팔을 뻗어 매달린 상태에서 상체를 뒤로 약 30도 기울이고, 허리를 살짝 아치형으로 만들며 가슴을 내밉니다. 이것이 시작 자세입니다.",
+        "어깨와 위팔을 아래·뒤로 당기며 철봉이 윗가슴에 닿을 때까지 몸을 끌어올립니다. 이때 숨을 내쉽니다. 완전히 수축된 지점에서 등 근육을 조이는 데 집중하세요. 상체는 고정된 채 움직이고 팔만 움직여야 하며, 전완은 철봉을 잡는 역할만 합니다.",
+        "수축 자세에서 1초 유지한 뒤, 숨을 들이마시며 팔이 완전히 펴지고 광배가 충분히 늘어날 때까지 천천히 내려옵니다.",
+        "정해진 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Grab the pull-up bar with the palms facing forward using the prescribed grip. Note on grips: For a wide grip, your hands need to be spaced out at a distance wider than your shoulder width. For a medium grip, your hands need to be spaced out at a distance equal to your shoulder width and for a close grip at a distance smaller than your shoulder width.",
+        "As you have both arms extended in front of you holding the bar at the chosen grip width, bring your torso back around 30 degrees or so while creating a curvature on your lower back and sticking your chest out. This is your starting position.",
+        "Pull your torso up until the bar touches your upper chest by drawing the shoulders and the upper arms down and back. Exhale as you perform this portion of the movement. Tip: Concentrate on squeezing the back muscles once you reach the full contracted position. The upper torso should remain stationary as it moves through space and only the arms should move. The forearms should do no other work other than hold the bar.",
+        "After a second on the contracted position, start to inhale and slowly lower your torso back to the starting position when your arms are fully extended and the lats are fully stretched.",
+        "Repeat this motion for the prescribed amount of repetitions."
+      ],
+      "noteKo": "어깨너비 그립이 어깨에 부담이 적어요. 올라가기 전에 어깨를 먼저 아래로 끌어내리고, 팔꿈치를 옆구리로 내리꽂는다는 느낌으로 당기세요.",
+      "images": [
+        "images/pull-up/0.jpg",
+        "images/pull-up/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Pullups"
+      }
+    },
+    {
+      "id": "chin-up",
+      "nameKo": "친업",
+      "nameEn": "Chin-Up",
+      "category": "pull",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "광배"
+      ],
+      "secondaryMuscles": [
+        "이두",
+        "전완",
+        "등 중앙"
+      ],
+      "highlight": [
+        {
+          "slug": "upper-back",
+          "intensity": 2
+        },
+        {
+          "slug": "biceps",
+          "intensity": 1
+        },
+        {
+          "slug": "forearm",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "손바닥이 몸을 향하게 하고 어깨너비보다 좁게 철봉을 잡습니다.",
+        "팔을 뻗어 매달린 상태에서 상체를 최대한 곧게 세우고, 허리를 살짝 아치형으로 만들며 가슴을 내밉니다. 이것이 시작 자세입니다. 상체를 곧게 세울수록 등보다 이두 자극이 커집니다.",
+        "숨을 내쉬며 머리가 철봉 높이 정도에 올 때까지 몸을 끌어올립니다. 이두를 사용하는 데 집중하고 팔꿈치는 몸에 붙입니다. 상체는 고정된 채 움직이고 팔만 움직이며, 전완은 철봉을 잡는 역할만 합니다.",
+        "수축 자세에서 1초 동안 이두를 조인 뒤, 숨을 들이마시며 팔이 완전히 펴질 때까지 천천히 내려옵니다.",
+        "정해진 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Grab the pull-up bar with the palms facing your torso and a grip closer than the shoulder width.",
+        "As you have both arms extended in front of you holding the bar at the chosen grip width, keep your torso as straight as possible while creating a curvature on your lower back and sticking your chest out. This is your starting position. Tip: Keeping the torso as straight as possible maximizes biceps stimulation while minimizing back involvement.",
+        "As you breathe out, pull your torso up until your head is around the level of the pull-up bar. Concentrate on using the biceps muscles in order to perform the movement. Keep the elbows close to your body. Tip: The upper torso should remain stationary as it moves through space and only the arms should move. The forearms should do no other work other than hold the bar.",
+        "After a second of squeezing the biceps in the contracted position, slowly lower your torso back to the starting position; when your arms are fully extended. Breathe in as you perform this portion of the movement.",
+        "Repeat this motion for the prescribed amount of repetitions."
+      ],
+      "noteKo": "손목·팔꿈치가 불편하면 W형 바의 꺾인 부분을 잡아보세요.",
+      "images": [
+        "images/chin-up/0.jpg",
+        "images/chin-up/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Chin-Up"
+      }
+    },
+    {
+      "id": "one-arm-dumbbell-row",
+      "nameKo": "원암 덤벨 로우",
+      "nameEn": "One-Arm Dumbbell Row",
+      "category": "pull",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "등 중앙"
+      ],
+      "secondaryMuscles": [
+        "이두",
+        "광배",
+        "어깨"
+      ],
+      "highlight": [
+        {
+          "slug": "upper-back",
+          "intensity": 2
+        },
+        {
+          "slug": "biceps",
+          "intensity": 1
+        },
+        {
+          "slug": "deltoids",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "평평한 벤치 양옆에 덤벨을 하나씩 둡니다.",
+        "오른쪽 무릎을 벤치 끝에 올리고, 상체가 바닥과 평행이 될 때까지 허리를 숙인 뒤 오른손으로 벤치 반대쪽을 짚어 몸을 지탱합니다.",
+        "허리를 곧게 편 채 왼손으로 바닥의 덤벨을 들어 올립니다. 손바닥은 몸을 향합니다. 이것이 시작 자세입니다.",
+        "위팔을 옆구리에 붙이고 상체를 고정한 채 덤벨을 가슴 옆까지 곧게 당겨 올립니다. 이때 숨을 내쉽니다. 완전히 수축된 지점에서 등 근육을 조이고, 팔이 아닌 등 근육으로 당기는 데 집중하세요. 전완은 덤벨을 잡는 역할만 합니다.",
+        "숨을 들이마시며 덤벨을 시작 자세로 곧게 내립니다.",
+        "정해진 횟수만큼 반복합니다.",
+        "반대쪽으로 바꿔 같은 방법으로 반복합니다."
+      ],
+      "instructionsEn": [
+        "Choose a flat bench and place a dumbbell on each side of it.",
+        "Place the right leg on top of the end of the bench, bend your torso forward from the waist until your upper body is parallel to the floor, and place your right hand on the other end of the bench for support.",
+        "Use the left hand to pick up the dumbbell on the floor and hold the weight while keeping your lower back straight. The palm of the hand should be facing your torso. This will be your starting position.",
+        "Pull the resistance straight up to the side of your chest, keeping your upper arm close to your side and keeping the torso stationary. Breathe out as you perform this step. Tip: Concentrate on squeezing the back muscles once you reach the full contracted position. Also, make sure that the force is performed with the back muscles and not the arms. Finally, the upper torso should remain stationary and only the arms should move. The forearms should do no other work except for holding the dumbbell; therefore do not try to pull the dumbbell up using the forearms.",
+        "Lower the resistance straight down to the starting position. Breathe in as you perform this step.",
+        "Repeat the movement for the specified amount of repetitions.",
+        "Switch sides and repeat again with the other arm."
+      ],
+      "noteKo": "벤치 대신 의자나 침대에 손과 무릎을 짚어도 됩니다.",
+      "images": [
+        "images/one-arm-dumbbell-row/0.jpg",
+        "images/one-arm-dumbbell-row/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "One-Arm_Dumbbell_Row"
+      }
+    },
+    {
+      "id": "dumbbell-reverse-fly",
+      "nameKo": "덤벨 리버스 플라이",
+      "nameEn": "Seated Bent-Over Rear Delt Raise",
+      "category": "pull",
+      "type": "reps",
+      "level": "intermediate",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "어깨"
+      ],
+      "secondaryMuscles": [],
+      "highlight": [
+        {
+          "slug": "deltoids",
+          "intensity": 2
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "평평한 벤치 앞에 덤벨 두 개를 앞을 향하게 둡니다.",
+        "다리를 모으고 벤치 끝에 앉아 덤벨이 종아리 뒤쪽에 오게 합니다.",
+        "등을 곧게 편 채 허리를 숙여 덤벨을 집습니다. 손바닥은 서로 마주 보게 합니다. 이것이 시작 자세입니다.",
+        "상체를 앞으로 숙인 채 고정하고 팔꿈치를 살짝 굽힌 상태로, 양팔이 바닥과 평행이 될 때까지 덤벨을 옆으로 곧게 들어 올립니다. 올리면서 숨을 내쉽니다. 상체를 흔들거나 팔을 옆이 아닌 뒤로 당기지 않도록 주의합니다.",
+        "위에서 1초 수축한 뒤 천천히 시작 자세로 내립니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Place a couple of dumbbells looking forward in front of a flat bench.",
+        "Sit on the end of the bench with your legs together and the dumbbells behind your calves.",
+        "Bend at the waist while keeping the back straight in order to pick up the dumbbells. The palms of your hands should be facing each other as you pick them. This will be your starting position.",
+        "Keeping your torso forward and stationary, and the arms slightly bent at the elbows, lift the dumbbells straight to the side until both arms are parallel to the floor. Exhale as you lift the weights. (Note: avoid swinging the torso or bringing the arms back as opposed to the side.)",
+        "After a one second contraction at the top, slowly lower the dumbbells back to the starting position.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": "의자 끝에 앉아서 하거나, 서서 상체를 숙여 해도 같은 동작입니다.",
+      "images": [
+        "images/dumbbell-reverse-fly/0.jpg",
+        "images/dumbbell-reverse-fly/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Seated_Bent-Over_Rear_Delt_Raise"
+      }
+    },
+    {
+      "id": "dumbbell-curl",
+      "nameKo": "덤벨 컬",
+      "nameEn": "Dumbbell Bicep Curl",
+      "category": "pull",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "이두"
+      ],
+      "secondaryMuscles": [
+        "전완"
+      ],
+      "highlight": [
+        {
+          "slug": "biceps",
+          "intensity": 2
+        },
+        {
+          "slug": "forearm",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "양손에 덤벨을 들고 팔을 늘어뜨린 채 곧게 섭니다. 팔꿈치는 몸통에 붙이고 손바닥이 앞을 향하게 돌립니다. 이것이 시작 자세입니다.",
+        "위팔을 고정한 채 숨을 내쉬며 이두를 수축해 덤벨을 들어 올립니다. 이두가 완전히 수축되고 덤벨이 어깨 높이에 올 때까지 올린 뒤, 잠깐 멈추며 이두를 조입니다.",
+        "숨을 들이마시며 천천히 덤벨을 시작 자세로 내립니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Stand up straight with a dumbbell in each hand at arm's length. Keep your elbows close to your torso and rotate the palms of your hands until they are facing forward. This will be your starting position.",
+        "Now, keeping the upper arms stationary, exhale and curl the weights while contracting your biceps. Continue to raise the weights until your biceps are fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a brief pause as you squeeze your biceps.",
+        "Then, inhale and slowly begin to lower the dumbbells back to the starting position.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": null,
+      "images": [
+        "images/dumbbell-curl/0.jpg",
+        "images/dumbbell-curl/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Dumbbell_Bicep_Curl"
+      }
+    },
+    {
+      "id": "hammer-curl",
+      "nameKo": "해머 컬",
+      "nameEn": "Hammer Curl",
+      "category": "pull",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "이두"
+      ],
+      "secondaryMuscles": [],
+      "highlight": [
+        {
+          "slug": "biceps",
+          "intensity": 2
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "상체를 곧게 세우고 양손에 덤벨을 들어 팔을 늘어뜨립니다. 팔꿈치는 몸통에 가깝게 둡니다.",
+        "손바닥이 몸을 향하게 합니다. 이것이 시작 자세입니다.",
+        "위팔을 고정한 채 숨을 내쉬며 이두를 수축해 덤벨을 앞으로 들어 올립니다. 이두가 완전히 수축되고 덤벨이 어깨 높이에 올 때까지 올린 뒤 잠깐 멈추며 이두를 조입니다. 팔꿈치는 고정하고 전완만 움직이세요.",
+        "잠깐 멈춘 뒤 숨을 들이마시며 천천히 시작 자세로 내립니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Stand up with your torso upright and a dumbbell on each hand being held at arms length. The elbows should be close to the torso.",
+        "The palms of the hands should be facing your torso. This will be your starting position.",
+        "Now, while holding your upper arm stationary, exhale and curl the weight forward while contracting the biceps. Continue to raise the weight until the biceps are fully contracted and the dumbbell is at shoulder level. Hold the contracted position for a brief moment as you squeeze the biceps. Tip: Focus on keeping the elbow stationary and only moving your forearm.",
+        "After the brief pause, inhale and slowly begin the lower the dumbbells back down to the starting position.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": null,
+      "images": [
+        "images/hammer-curl/0.jpg",
+        "images/hammer-curl/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Hammer_Curls"
+      }
+    },
+    {
+      "id": "dead-hang",
+      "nameKo": "매달려 버티기",
+      "nameEn": "Dead Hang",
+      "category": "pull",
+      "type": "time",
+      "level": "beginner",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "전완",
+        "광배"
+      ],
+      "secondaryMuscles": [
+        "어깨"
+      ],
+      "highlight": [
+        {
+          "slug": "forearm",
+          "intensity": 2
+        },
+        {
+          "slug": "upper-back",
+          "intensity": 2
+        },
+        {
+          "slug": "deltoids",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "back"
+      ],
+      "instructionsKo": [
+        "어깨너비 정도로 철봉을 잡고 팔을 완전히 편 채 매달립니다.",
+        "어깨가 귀 쪽으로 너무 올라가지 않도록 살짝 끌어내린 상태를 유지합니다.",
+        "몸이 흔들리지 않게 복부에 힘을 주고 정해진 시간 동안 버팁니다.",
+        "발을 바닥에 내려 천천히 내려옵니다."
+      ],
+      "instructionsEn": null,
+      "noteKo": "free-exercise-db에 양손 매달리기 항목이 없어 직접 작성한 설명입니다. 이미지가 없습니다.",
+      "images": [],
+      "source": null
+    },
+    {
+      "id": "dumbbell-squat",
+      "nameKo": "덤벨 스쿼트",
+      "nameEn": "Dumbbell Squat",
+      "category": "legs",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "대퇴사두"
+      ],
+      "secondaryMuscles": [
+        "종아리",
+        "둔근",
+        "햄스트링",
+        "허리"
+      ],
+      "highlight": [
+        {
+          "slug": "quadriceps",
+          "intensity": 2
+        },
+        {
+          "slug": "calves",
+          "intensity": 1
+        },
+        {
+          "slug": "gluteal",
+          "intensity": 1
+        },
+        {
+          "slug": "hamstring",
+          "intensity": 1
+        },
+        {
+          "slug": "lower-back",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "양손에 덤벨을 하나씩 들고 곧게 섭니다(손바닥이 다리 옆을 향하게).",
+        "발은 어깨너비로 벌리고 발끝은 살짝 바깥을 향하게 합니다. 시선은 항상 앞을 보고(아래를 보면 균형을 잃기 쉽습니다) 등을 곧게 유지합니다. 이것이 시작 자세입니다.",
+        "고개를 들고 곧은 자세를 유지하며 무릎을 굽혀 천천히 몸을 내립니다. 허벅지가 바닥과 평행이 될 때까지 내려갑니다.",
+        "숨을 내쉬며 주로 발뒤꿈치로 바닥을 밀어 다리를 펴고 시작 자세로 돌아옵니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Stand up straight while holding a dumbbell on each hand (palms facing the side of your legs).",
+        "Position your legs using a shoulder width medium stance with the toes slightly pointed out. Keep your head up at all times as looking down will get you off balance and also maintain a straight back. This will be your starting position. Note: For the purposes of this discussion we will use the medium stance described above which targets overall development; however you can choose any of the three stances discussed in the foot stances section.",
+        "Begin to slowly lower your torso by bending the knees as you maintain a straight posture with the head up. Continue down until your thighs are parallel to the floor. Tip: If you performed the exercise correctly, the front of the knees should make an imaginary straight line with the toes that is perpendicular to the front. If your knees are past that imaginary line (if they are past your toes) then you are placing undue stress on the knee and the exercise has been performed incorrectly.",
+        "Begin to raise your torso as you exhale by pushing the floor with the heel of your foot mainly as you straighten the legs again and go back to the starting position.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": "원문에는 '무릎이 발끝을 넘으면 안 된다'는 팁이 있지만, 최근에는 발 전체로 무게를 지지하고 무릎이 발끝 방향과 일치하면 발끝을 넘어도 괜찮다고 봅니다.",
+      "images": [
+        "images/dumbbell-squat/0.jpg",
+        "images/dumbbell-squat/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Dumbbell_Squat"
+      }
+    },
+    {
+      "id": "bulgarian-split-squat",
+      "nameKo": "불가리안 스플릿 스쿼트",
+      "nameEn": "Split Squat with Dumbbells",
+      "category": "legs",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "대퇴사두"
+      ],
+      "secondaryMuscles": [
+        "둔근",
+        "햄스트링"
+      ],
+      "highlight": [
+        {
+          "slug": "quadriceps",
+          "intensity": 2
+        },
+        {
+          "slug": "gluteal",
+          "intensity": 1
+        },
+        {
+          "slug": "hamstring",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "뒷발을 높은 곳에 올리고 앞발은 앞으로 내딛어 앞뒤로 벌린 자세를 만듭니다.",
+        "양손에 덤벨을 들어 몸 옆에 늘어뜨립니다. 이것이 시작 자세입니다.",
+        "무릎과 고관절을 굽혀 몸을 내립니다. 동작 내내 바른 자세를 유지하고, 앞 무릎이 발과 같은 방향을 향하게 합니다.",
+        "가장 아래에서 뒤꿈치로 밀어 무릎과 고관절을 펴며 시작 자세로 돌아옵니다."
+      ],
+      "instructionsEn": [
+        "Position yourself into a staggered stance with the rear foot elevated and front foot forward.",
+        "Hold a dumbbell in each hand, letting them hang at the sides. This will be your starting position.",
+        "Begin by descending, flexing your knee and hip to lower your body down. Maintain good posture througout the movement. Keep the front knee in line with the foot as you perform the exercise.",
+        "At the bottom of the movement, drive through the heel to extend the knee and hip to return to the starting position."
+      ],
+      "noteKo": "뒷발은 의자나 침대에 올리면 됩니다. 한쪽 세트를 마친 뒤 다리를 바꿔 반복하세요.",
+      "images": [
+        "images/bulgarian-split-squat/0.jpg",
+        "images/bulgarian-split-squat/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Split_Squat_with_Dumbbells"
+      }
+    },
+    {
+      "id": "dumbbell-romanian-deadlift",
+      "nameKo": "덤벨 루마니안 데드리프트",
+      "nameEn": "Stiff-Legged Dumbbell Deadlift",
+      "category": "legs",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "햄스트링"
+      ],
+      "secondaryMuscles": [
+        "둔근",
+        "허리"
+      ],
+      "highlight": [
+        {
+          "slug": "hamstring",
+          "intensity": 2
+        },
+        {
+          "slug": "gluteal",
+          "intensity": 1
+        },
+        {
+          "slug": "lower-back",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "back"
+      ],
+      "instructionsKo": [
+        "덤벨 두 개를 잡고 팔을 늘어뜨려 몸 옆에 둡니다.",
+        "상체를 곧게 세우고 발은 어깨너비 또는 그보다 좁게 섭니다. 무릎은 살짝 굽힙니다. 이것이 시작 자세입니다.",
+        "무릎 각도를 유지한 채 등을 곧게 펴고 허리를 숙여 덤벨을 발등 위까지 내립니다. 바닥의 물건을 집듯 계속 숙이다가 햄스트링이 늘어나는 느낌이 들면 멈춥니다. 이때 숨을 내쉽니다.",
+        "고관절과 허리를 펴며 상체를 다시 곧게 세워 시작 자세로 돌아옵니다. 이때 숨을 들이마십니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Grasp a couple of dumbbells holding them by your side at arm's length.",
+        "Stand with your torso straight and your legs spaced using a shoulder width or narrower stance. The knees should be slightly bent. This is your starting position.",
+        "Keeping the knees stationary, lower the dumbbells to over the top of your feet by bending at the waist while keeping your back straight. Keep moving forward as if you were going to pick something from the floor until you feel a stretch on the hamstrings. Exhale as you perform this movement",
+        "Start bringing your torso up straight again by extending your hips and waist until you are back at the starting position. Inhale as you perform this movement.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": "원문은 스티프 레그 데드리프트예요. 루마니안 데드리프트는 거의 같지만 엉덩이를 뒤로 빼는 느낌을 더 강조하고, 덤벨이 허벅지를 따라 내려갑니다.",
+      "images": [
+        "images/dumbbell-romanian-deadlift/0.jpg",
+        "images/dumbbell-romanian-deadlift/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Stiff-Legged_Dumbbell_Deadlift"
+      }
+    },
+    {
+      "id": "single-leg-romanian-deadlift",
+      "nameKo": "싱글 레그 루마니안 데드리프트",
+      "nameEn": "One-Legged Deadlift",
+      "category": "legs",
+      "type": "reps",
+      "level": "intermediate",
+      "equipment": "kettlebells",
+      "primaryMuscles": [
+        "햄스트링"
+      ],
+      "secondaryMuscles": [
+        "둔근",
+        "허리"
+      ],
+      "highlight": [
+        {
+          "slug": "hamstring",
+          "intensity": 2
+        },
+        {
+          "slug": "gluteal",
+          "intensity": 1
+        },
+        {
+          "slug": "lower-back",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "back"
+      ],
+      "instructionsKo": [
+        "한 손으로 케틀벨 손잡이를 잡습니다. 케틀벨을 든 쪽과 같은 쪽 다리로 한 발 서기를 합니다.",
+        "그 다리의 무릎을 살짝 굽힌 채 고관절을 접어 스티프 레그 데드리프트를 하며, 반대쪽 다리는 균형을 위해 뒤로 뻗습니다.",
+        "상체가 바닥과 평행이 될 때까지 케틀벨을 내린 뒤, 다시 곧게 선 자세로 돌아옵니다."
+      ],
+      "instructionsEn": [
+        "Hold a kettlebell by the handle in one hand. Stand on one leg, on the same side that you hold the kettlebell.",
+        "Keeping that knee slightly bent, perform a stiff legged deadlift by bending at the hip, extending your free leg behind you for balance.",
+        "Continue lowering the kettlebell until you are parallel to the ground, and then return to the upright position."
+      ],
+      "noteKo": "원문은 케틀벨 동작이에요. 덤벨 하나를 한 손에 들거나 양손에 하나씩 들고 해도 됩니다.",
+      "images": [
+        "images/single-leg-romanian-deadlift/0.jpg",
+        "images/single-leg-romanian-deadlift/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Kettlebell_One-Legged_Deadlift"
+      }
+    },
+    {
+      "id": "reverse-lunge",
+      "nameKo": "리버스 런지",
+      "nameEn": "Dumbbell Rear Lunge",
+      "category": "legs",
+      "type": "reps",
+      "level": "intermediate",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "대퇴사두"
+      ],
+      "secondaryMuscles": [
+        "종아리",
+        "둔근",
+        "햄스트링"
+      ],
+      "highlight": [
+        {
+          "slug": "quadriceps",
+          "intensity": 2
+        },
+        {
+          "slug": "calves",
+          "intensity": 1
+        },
+        {
+          "slug": "gluteal",
+          "intensity": 1
+        },
+        {
+          "slug": "hamstring",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "상체를 곧게 세우고 양손에 덤벨을 들어 몸 옆에 둡니다. 이것이 시작 자세입니다.",
+        "오른발을 왼발에서 약 60cm 정도 뒤로 내딛으며, 상체를 곧게 세우고 균형을 유지한 채 몸을 내립니다. 내려가면서 숨을 들이마십니다. 앞쪽 정강이는 바닥과 수직을 유지하고, 상체를 곧게 세우세요(고관절 굴곡근의 유연성이 중요합니다). 보폭이 길면 둔근, 짧으면 대퇴사두에 더 자극이 갑니다.",
+        "숨을 내쉬며 밀어 올려 시작 자세로 돌아옵니다. 발 앞쪽으로 밀면 대퇴사두, 뒤꿈치로 밀면 둔근에 더 집중됩니다.",
+        "반대쪽 다리로 반복합니다."
+      ],
+      "instructionsEn": [
+        "Stand with your torso upright holding two dumbbells in your hands by your sides. This will be your starting position.",
+        "Step backward with your right leg around two feet or so from the left foot and lower your upper body down, while keeping the torso upright and maintaining balance. Inhale as you go down. Tip: As in the other exercises, do not allow your knee to go forward beyond your toes as you come down, as this will put undue stress on the knee joint. Make sure that you keep your front shin perpendicular to the ground. Keep the torso upright during the lunge; flexible hip flexors are important. A long lunge emphasizes the Gluteus Maximus; a short lunge emphasizes Quadriceps.",
+        "Push up and go back to the starting position as you exhale. Tip: Use the ball of your feet to push in order to accentuate the quadriceps. To focus on the glutes, press with your heels.",
+        "Now repeat with the opposite leg."
+      ],
+      "noteKo": null,
+      "images": [
+        "images/reverse-lunge/0.jpg",
+        "images/reverse-lunge/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Dumbbell_Rear_Lunge"
+      }
+    },
+    {
+      "id": "glute-bridge",
+      "nameKo": "글루트 브릿지",
+      "nameEn": "Glute Bridge",
+      "category": "legs",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "둔근"
+      ],
+      "secondaryMuscles": [
+        "햄스트링"
+      ],
+      "highlight": [
+        {
+          "slug": "gluteal",
+          "intensity": 2
+        },
+        {
+          "slug": "hamstring",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "back"
+      ],
+      "instructionsKo": [
+        "바닥에 등을 대고 누워 손은 몸 옆에 두고 무릎을 굽힙니다. 발은 어깨너비 정도로 둡니다. 이것이 시작 자세입니다.",
+        "주로 뒤꿈치로 바닥을 밀며 등을 곧게 유지한 채 엉덩이를 바닥에서 들어 올립니다. 이때 숨을 내쉬고, 위에서 1초 유지합니다.",
+        "숨을 들이마시며 천천히 시작 자세로 돌아옵니다."
+      ],
+      "instructionsEn": [
+        "Lie flat on the floor on your back with the hands by your side and your knees bent. Your feet should be placed around shoulder width. This will be your starting position.",
+        "Pushing mainly with your heels, lift your hips off the floor while keeping your back straight. Breathe out as you perform this part of the motion and hold at the top for a second.",
+        "Slowly go back to the starting position as you breathe in."
+      ],
+      "noteKo": null,
+      "images": [
+        "images/glute-bridge/0.jpg",
+        "images/glute-bridge/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Butt_Lift_Bridge"
+      }
+    },
+    {
+      "id": "single-leg-glute-bridge",
+      "nameKo": "싱글 레그 글루트 브릿지",
+      "nameEn": "Single Leg Glute Bridge",
+      "category": "legs",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "둔근"
+      ],
+      "secondaryMuscles": [
+        "햄스트링"
+      ],
+      "highlight": [
+        {
+          "slug": "gluteal",
+          "intensity": 2
+        },
+        {
+          "slug": "hamstring",
+          "intensity": 1
+        }
+      ],
+      "bodyViews": [
+        "back"
+      ],
+      "instructionsKo": [
+        "바닥에 누워 발바닥을 바닥에 대고 무릎을 굽힙니다.",
+        "한쪽 다리를 바닥에서 들어 무릎을 가슴 쪽으로 당깁니다. 이것이 시작 자세입니다.",
+        "바닥에 있는 발의 뒤꿈치로 밀어 고관절을 위로 펴며 엉덩이를 바닥에서 들어 올립니다.",
+        "최대한 들어 올린 뒤 잠깐 멈추고 시작 자세로 돌아옵니다."
+      ],
+      "instructionsEn": [
+        "Lay on the floor with your feet flat and knees bent.",
+        "Raise one leg off of the ground, pulling the knee to your chest. This will be your starting position.",
+        "Execute the movement by driving through the heel, extending your hip upward and raising your glutes off of the ground.",
+        "Extend as far as possible, pause and then return to the starting position."
+      ],
+      "noteKo": null,
+      "images": [
+        "images/single-leg-glute-bridge/0.jpg",
+        "images/single-leg-glute-bridge/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Single_Leg_Glute_Bridge"
+      }
+    },
+    {
+      "id": "calf-raise",
+      "nameKo": "카프레이즈",
+      "nameEn": "Standing Dumbbell Calf Raise",
+      "category": "legs",
+      "type": "reps",
+      "level": "intermediate",
+      "equipment": "dumbbell",
+      "primaryMuscles": [
+        "종아리"
+      ],
+      "secondaryMuscles": [],
+      "highlight": [
+        {
+          "slug": "calves",
+          "intensity": 2
+        }
+      ],
+      "bodyViews": [
+        "front",
+        "back"
+      ],
+      "instructionsKo": [
+        "상체를 곧게 세우고 양손에 덤벨을 들어 몸 옆에 둡니다. 5~8cm 높이의 튼튼한 받침 위에 발 앞쪽을 올리고, 뒤꿈치는 받침 밖으로 내려 바닥에 닿게 합니다. 이것이 시작 자세입니다.",
+        "발끝을 정면(전체 균형 있게), 안쪽(바깥쪽 갈래 강조), 또는 바깥쪽(안쪽 갈래 강조)으로 두고, 종아리를 수축하며 숨을 내쉬면서 뒤꿈치를 들어 올립니다. 가장 위에서 1초 유지합니다.",
+        "숨을 들이마시며 천천히 뒤꿈치를 내려 시작 자세로 돌아옵니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Stand with your torso upright holding two dumbbells in your hands by your sides. Place the ball of the foot on a sturdy and stable wooden board (that is around 2-3 inches tall) while your heels extend off and touch the floor. This will be your starting position.",
+        "With the toes pointing either straight (to hit all parts equally), inwards (for emphasis on the outer head) or outwards (for emphasis on the inner head), raise the heels off the floor as you exhale by contracting the calves. Hold the top contraction for a second.",
+        "As you inhale, go back to the starting position by slowly lowering the heels.",
+        "Repeat for the recommended amount of times."
+      ],
+      "noteKo": "받침 대신 계단 끝을 활용해도 됩니다.",
+      "images": [
+        "images/calf-raise/0.jpg",
+        "images/calf-raise/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Standing_Dumbbell_Calf_Raise"
+      }
+    },
+    {
+      "id": "leg-raise",
+      "nameKo": "레그레이즈",
+      "nameEn": "Lying Leg Raise",
+      "category": "core",
+      "type": "reps",
+      "level": "beginner",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "복근"
+      ],
+      "secondaryMuscles": [],
+      "highlight": [
+        {
+          "slug": "abs",
+          "intensity": 2
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "벤치에 등을 평평하게 대고 누워 다리를 벤치 끝 밖으로 뻗습니다.",
+        "손은 손바닥을 아래로 해서 엉덩이 밑에 두거나, 몸 옆에서 벤치를 잡습니다. 이것이 시작 자세입니다.",
+        "무릎을 살짝 굽힌 채 고정하고 다리를 최대한 곧게 편 상태로, 다리가 바닥과 90도가 될 때까지 들어 올립니다. 올리면서 숨을 내쉬고 위에서 1초 유지합니다.",
+        "숨을 들이마시며 천천히 다리를 시작 자세로 내립니다."
+      ],
+      "instructionsEn": [
+        "Lie with your back flat on a bench and your legs extended in front of you off the end.",
+        "Place your hands either under your glutes with your palms down or by the sides holding on to the bench. This will be your starting position.",
+        "As you keep your legs extended, straight as possible with your knees slightly bent but locked raise your legs until they make a 90-degree angle with the floor. Exhale as you perform this portion of the movement and hold the contraction at the top for a second.",
+        "Now, as you inhale, slowly lower your legs back down to the starting position."
+      ],
+      "noteKo": "원문은 벤치 위 동작이에요. 집에서는 바닥에 누워서 해도 되며, 허리가 뜨지 않게 바닥에 붙이고 하세요.",
+      "images": [
+        "images/leg-raise/0.jpg",
+        "images/leg-raise/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Flat_Bench_Lying_Leg_Raise"
+      }
+    },
+    {
+      "id": "hanging-knee-raise",
+      "nameKo": "행잉 니레이즈",
+      "nameEn": "Hanging Leg Raise",
+      "category": "core",
+      "type": "reps",
+      "level": "expert",
+      "equipment": "body only",
+      "primaryMuscles": [
+        "복근"
+      ],
+      "secondaryMuscles": [],
+      "highlight": [
+        {
+          "slug": "abs",
+          "intensity": 2
+        }
+      ],
+      "bodyViews": [
+        "front"
+      ],
+      "instructionsKo": [
+        "넓은 그립이나 중간 그립으로 철봉을 잡고 팔을 완전히 편 채 매달립니다. 다리는 아래로 곧게 내리고 골반은 살짝 뒤로 말아 둡니다. 이것이 시작 자세입니다.",
+        "상체와 다리가 90도가 될 때까지 다리를 들어 올립니다. 올리면서 숨을 내쉬고 1초 정도 유지합니다.",
+        "숨을 들이마시며 천천히 시작 자세로 돌아옵니다.",
+        "권장 횟수만큼 반복합니다."
+      ],
+      "instructionsEn": [
+        "Hang from a chin-up bar with both arms extended at arms length in top of you using either a wide grip or a medium grip. The legs should be straight down with the pelvis rolled slightly backwards. This will be your starting position.",
+        "Raise your legs until the torso makes a 90-degree angle with the legs. Exhale as you perform this movement and hold the contraction for a second or so.",
+        "Go back slowly to the starting position as you breathe in.",
+        "Repeat for the recommended amount of repetitions."
+      ],
+      "noteKo": "원문은 다리를 편 채 올리는 행잉 레그레이즈(고급)예요. 니레이즈는 무릎을 굽혀 가슴 쪽으로 당기는 쉬운 버전입니다.",
+      "images": [
+        "images/hanging-knee-raise/0.jpg",
+        "images/hanging-knee-raise/1.jpg"
+      ],
+      "source": {
+        "dataset": "free-exercise-db",
+        "id": "Hanging_Leg_Raise"
+      }
+    }
+  ]
+}

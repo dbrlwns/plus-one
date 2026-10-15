@@ -12,14 +12,18 @@ import {
   createInitialState,
   isLastExercise,
   isLastSet,
+  TEMPO_MAX,
+  TEMPO_MIN,
+  TEMPO_STEP,
   workoutReducer,
   type PlanItem,
 } from '../workout/machine';
 import { Body, Btn, Card, Heading, Sub } from './ui';
 
 const KEEP_AWAKE_TAG = 'workout-session';
+const TICK_MS = 500;
 
-/** 1초 단위 틱. 백그라운드에서 타이머가 늦게 돌아도 밀린 초만큼 따라잡는다. */
+/** 0.5초 단위 틱. 백그라운드에서 타이머가 늦게 돌아도 밀린 만큼 따라잡는다. */
 function useTicker(running: boolean, onTick: () => void) {
   const cb = useRef(onTick);
   useEffect(() => {
@@ -29,18 +33,18 @@ function useTicker(running: boolean, onTick: () => void) {
     if (!running) return;
     let last = Date.now();
     const id = setInterval(() => {
-      const owed = Math.min(Math.floor((Date.now() - last) / 1000), 120);
+      const owed = Math.min(Math.floor((Date.now() - last) / TICK_MS), 240);
       if (owed <= 0) return;
-      last += owed * 1000;
+      last += owed * TICK_MS;
       for (let i = 0; i < owed; i++) cb.current();
-    }, 250);
+    }, 100);
     return () => clearInterval(id);
   }, [running]);
 }
 
 export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () => void }) {
   const t = useTheme();
-  const { settings, addRecord } = useAppData();
+  const { settings, addRecord, updateSettings } = useAppData();
   const [state, dispatch] = useReducer(workoutReducer, undefined, () =>
     createInitialState(plan, settings.restSec, settings.tempoSec),
   );
@@ -71,6 +75,11 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
     const record = buildRecord(state);
     if (record) addRecord(record);
   }, [state, addRecord]);
+
+  const setTempo = (tempoSec: number) => {
+    dispatch({ type: 'SET_TEMPO', tempoSec });
+    updateSettings({ tempoSec: Math.min(TEMPO_MAX, Math.max(TEMPO_MIN, tempoSec)) });
+  };
 
   const item = state.plan[state.exIdx];
   const unit = unitOf(item.type);
@@ -118,6 +127,30 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
         <Btn title="운동 종료" kind="ghost" size="sm" onPress={abort} />
       </View>
 
+      {item.type === 'reps' && state.phase !== 'transition' ? (
+        <View style={[styles.tempoRow, { backgroundColor: t.card, borderColor: t.border }]}>
+          <Text style={{ color: t.subtext, fontSize: 15, fontWeight: '700' }}>템포</Text>
+          <Btn
+            title="−"
+            kind="secondary"
+            size="sm"
+            disabled={state.tempoSec <= TEMPO_MIN}
+            onPress={() => setTempo(state.tempoSec - TEMPO_STEP)}
+          />
+          <Text style={{ color: t.text, fontSize: 20, fontWeight: '800', minWidth: 64, textAlign: 'center' }}>
+            {state.tempoSec}초
+          </Text>
+          <Btn
+            title="+"
+            kind="secondary"
+            size="sm"
+            disabled={state.tempoSec >= TEMPO_MAX}
+            onPress={() => setTempo(state.tempoSec + TEMPO_STEP)}
+          />
+          <Sub>반복 1회당</Sub>
+        </View>
+      ) : null}
+
       <View style={styles.center}>
         {state.phase === 'ready' && (
           <>
@@ -127,7 +160,7 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
               {unit}
             </Text>
             <Sub>
-              {item.type === 'reps' ? `${settings.tempoSec}초 템포 · ` : ''}세트 사이 휴식 {settings.restSec}초
+              세트 사이 휴식 {settings.restSec}초
             </Sub>
           </>
         )}
@@ -189,6 +222,13 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
         {state.phase === 'transition' && (
           <Btn title="확인" size="xl" onPress={() => dispatch({ type: 'CONFIRM_NEXT' })} />
         )}
+        {state.phase !== 'ready' && (
+          <Btn
+            title="운동 초기화 (세트 다시 하기)"
+            kind="ghost"
+            onPress={() => dispatch({ type: 'RESET_SET' })}
+          />
+        )}
       </View>
     </View>
   );
@@ -199,6 +239,16 @@ const styles = StyleSheet.create({
   top: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   exName: { fontSize: 28, fontWeight: '800', marginTop: 2 },
   exNext: { fontSize: 36, fontWeight: '900', textAlign: 'center' },
+  tempoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    borderWidth: 1,
+    borderRadius: 14,
+    paddingVertical: 8,
+    marginTop: 12,
+  },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 },
   label: { fontSize: 22, fontWeight: '700' },
   huge: { fontSize: 168, fontWeight: '900', lineHeight: 190, fontVariant: ['tabular-nums'] },

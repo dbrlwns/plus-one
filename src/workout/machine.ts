@@ -4,7 +4,9 @@ import { toKey } from '../utils/date';
 
 /**
  * 운동 진행 상태 머신 (UI와 무관한 순수 reducer).
- * 시간은 TICK(1초) 액션으로만 흐른다. 소리/진동은 state.cue 변화를 UI가 구독해서 처리한다.
+ * 시간은 TICK(0.5초) 액션으로만 흐른다. 소리/진동은 state.cue 변화를 UI가 구독해서 처리한다.
+ * 템포는 0.5초 단위로 설정할 수 있어서 틱을 반 초 단위로 쪼갰고, 초 단위 동작(카운트다운/휴식/시간형)은
+ * half 플래그로 두 틱에 한 번만 처리한다.
  */
 
 export interface PlanItem {
@@ -19,18 +21,23 @@ export type Phase = 'ready' | 'countdown' | 'active' | 'rest' | 'transition' | '
 export type CueKind = 'countdown' | 'rep' | 'sec' | 'setDone' | 'restEnd' | 'finish';
 
 export const COUNTDOWN_FROM = 3;
+export const TEMPO_MIN = 0.5;
+export const TEMPO_MAX = 10;
+export const TEMPO_STEP = 0.5;
 
 export interface WorkoutState {
   plan: PlanItem[];
   restSec: number;
   tempoSec: number;
+  /** 0.5초 틱 중 현재가 초의 두 번째 틱이면 1 */
+  half: 0 | 1;
   phase: Phase;
   exIdx: number;
   setIdx: number;
   countdown: number;
   /** 현재 세트의 반복 수(시간형은 초) */
   count: number;
-  /** 마지막 반복 이후 흐른 초 */
+  /** 마지막 반복 이후 흐른 시간 (0.5초 단위) */
   tempoElapsed: number;
   restLeft: number;
   /** results[운동][세트] = 실제 반복 수 */
@@ -47,6 +54,8 @@ export type WorkoutAction =
   | { type: 'ADD_REST'; sec: number }
   | { type: 'SKIP_REST' }
   | { type: 'CONFIRM_NEXT' }
+  | { type: 'RESET_SET' }
+  | { type: 'SET_TEMPO'; tempoSec: number }
   | { type: 'ABORT' };
 
 export function createInitialState(plan: PlanItem[], restSec: number, tempoSec: number): WorkoutState {
@@ -54,6 +63,7 @@ export function createInitialState(plan: PlanItem[], restSec: number, tempoSec: 
     plan,
     restSec,
     tempoSec,
+    half: 0,
     phase: 'ready',
     exIdx: 0,
     setIdx: 0,
@@ -74,7 +84,7 @@ function withCue(state: WorkoutState, kind: CueKind): WorkoutState {
 
 function startCountdown(state: WorkoutState): WorkoutState {
   return withCue(
-    { ...state, phase: 'countdown', countdown: COUNTDOWN_FROM, count: 0, tempoElapsed: 0 },
+    { ...state, phase: 'countdown', countdown: COUNTDOWN_FROM, count: 0, tempoElapsed: 0, half: 0 },
     'countdown',
   );
 }
@@ -90,7 +100,7 @@ export function isLastExercise(state: WorkoutState): boolean {
 function finishSet(state: WorkoutState, actual: number): WorkoutState {
   const results = state.results.map((r) => r.slice());
   results[state.exIdx][state.setIdx] = actual;
-  const next = { ...state, results, count: 0, tempoElapsed: 0 };
+  const next = { ...state, results, count: 0, tempoElapsed: 0, half: 0 as const };
   if (isLastSet(state) && isLastExercise(state)) {
     return withCue({ ...next, phase: 'summary' }, 'finish');
   }
@@ -106,32 +116,43 @@ function endRest(state: WorkoutState): WorkoutState {
   return withCue(startCountdown(next), 'restEnd');
 }
 
+const tempoHalves = (state: WorkoutState) => Math.max(1, Math.round(state.tempoSec * 2));
+
 function tick(state: WorkoutState): WorkoutState {
+  if (state.phase !== 'countdown' && state.phase !== 'active' && state.phase !== 'rest') return state;
+  const second = state.half === 1;
+  const base: WorkoutState = {
+    ...state,
+    half: second ? 0 : 1,
+    elapsed: state.elapsed + (second ? 1 : 0),
+  };
+
   switch (state.phase) {
     case 'countdown': {
-      const s = { ...state, elapsed: state.elapsed + 1 };
-      const c = s.countdown - 1;
-      if (c <= 0) return withCue({ ...s, phase: 'active', countdown: 0, count: 0, tempoElapsed: 0 }, 'countdown');
-      return withCue({ ...s, countdown: c }, 'countdown');
+      if (!second) return base;
+      const c = base.countdown - 1;
+      if (c <= 0) {
+        return withCue({ ...base, phase: 'active', countdown: 0, count: 0, tempoElapsed: 0, half: 0 }, 'countdown');
+      }
+      return withCue({ ...base, countdown: c }, 'countdown');
     }
     case 'active': {
-      const item = state.plan[state.exIdx];
-      let s = { ...state, elapsed: state.elapsed + 1 };
+      const item = base.plan[base.exIdx];
       if (item.type === 'time') {
-        s = { ...s, count: s.count + 1 };
+        if (!second) return base;
+        const s = { ...base, count: base.count + 1 };
         return s.count >= item.target ? finishSet(s, s.count) : withCue(s, 'sec');
       }
-      const te = s.tempoElapsed + 1;
-      if (te < s.tempoSec) return { ...s, tempoElapsed: te };
-      s = { ...s, count: s.count + 1, tempoElapsed: 0 };
+      const te = base.tempoElapsed + 1;
+      if (te < tempoHalves(base)) return { ...base, tempoElapsed: te };
+      const s = { ...base, count: base.count + 1, tempoElapsed: 0 };
       return s.count >= item.target ? finishSet(s, s.count) : withCue(s, 'rep');
     }
     case 'rest': {
-      const s = { ...state, elapsed: state.elapsed + 1, restLeft: state.restLeft - 1 };
+      if (!second) return base;
+      const s = { ...base, restLeft: base.restLeft - 1 };
       return s.restLeft <= 0 ? endRest(s) : s;
     }
-    default:
-      return state;
   }
 }
 
@@ -151,6 +172,16 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
     case 'CONFIRM_NEXT':
       if (state.phase !== 'transition') return state;
       return startCountdown({ ...state, exIdx: state.exIdx + 1, setIdx: 0 });
+    case 'RESET_SET': {
+      // 진행 중이거나 방금 끝난 세트를 처음부터 다시 한다 (방금 끝난 세트의 기록은 버린다)
+      if (state.phase === 'ready' || state.phase === 'summary') return state;
+      const results = state.results.map((r, i) => (i === state.exIdx ? r.slice(0, state.setIdx) : r));
+      return startCountdown({ ...state, results, restLeft: 0 });
+    }
+    case 'SET_TEMPO': {
+      const v = Math.round(action.tempoSec / TEMPO_STEP) * TEMPO_STEP;
+      return { ...state, tempoSec: Math.min(TEMPO_MAX, Math.max(TEMPO_MIN, v)) };
+    }
     case 'ABORT':
       return state.phase === 'summary' ? state : { ...state, phase: 'summary' };
   }

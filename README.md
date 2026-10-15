@@ -15,12 +15,17 @@ npm run android  # Android 에뮬레이터
 
 | 경로 | 역할 |
 | --- | --- |
-| `app/(tabs)/` | expo-router 하단 탭 4개: 달력(`index`), 루틴, 운동, 설정 |
+| `app/(tabs)/` | expo-router 하단 탭 5개: 달력(`index`), 루틴, 운동, 배우기, 설정 |
 | `src/workout/machine.ts` | 운동 진행 상태 머신 (UI와 분리된 순수 reducer) |
 | `src/components/WorkoutSession.tsx` | 상태 머신을 화면에 연결 (1초 틱, 소리/진동, 화면 꺼짐 방지) |
 | `src/storage/storage.ts` | AsyncStorage 저장/불러오기 모듈 |
 | `src/state/AppData.tsx` | 설정/루틴/기록 컨텍스트 (변경 시 자동 저장) |
 | `src/data/exercises.ts` | 기본 운동 DB (부위별) |
+| `app/(tabs)/learn.tsx` | 배우기 탭: 운동 목록 → 상세(순환 이미지, 자극 부위, 운동 방법) |
+| `src/components/ExerciseImageLoop.tsx` | 번호 순서대로 0.5초마다 이미지 순환 |
+| `src/components/MuscleMap.tsx` | react-native-body-highlighter로 자극 부위 표시 |
+| `repup-exercise-data/` | 운동 설명/이미지 원본 (free-exercise-db 기반) |
+| `scripts/gen-learn-data.js` | 위 JSON → `src/data/learnData.generated.ts` 변환 (데이터 수정 후 재실행) |
 | `scripts/gen-sounds.js` | 알림음(WAV) 생성 |
 | `scripts/machine-check.ts` | 상태 머신 흐름 점검 (`npx tsx scripts/machine-check.ts`) |
 

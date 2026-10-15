@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Body, Btn, Card, Chip, Heading, Screen, Stepper, Sub } from '../../src/components/ui';
 import { PARTS, WEEKDAYS, exercisesForPart, getExercise, unitOf, type Part } from '../../src/data/exercises';
+import { useBackPress } from '../../src/hooks/useBackPress';
 import { useAppData } from '../../src/state/AppData';
 import { newItemId } from '../../src/storage/storage';
 import { useTheme } from '../../src/theme';
@@ -13,6 +14,13 @@ export default function RoutineScreen() {
   const { routine, setRoutine } = useAppData();
   const [dayIdx, setDayIdx] = useState(() => weekdayIndex(new Date()));
   const [picking, setPicking] = useState(false);
+
+  // 운동 추가 목록이 열려 있으면 뒤로가기로 먼저 닫는다
+  useBackPress(() => {
+    if (!picking) return false;
+    setPicking(false);
+    return true;
+  });
 
   const day = routine[dayIdx];
 

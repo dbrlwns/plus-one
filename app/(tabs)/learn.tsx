@@ -5,6 +5,7 @@ import { ExerciseImageLoop } from '../../src/components/ExerciseImageLoop';
 import { MuscleMap } from '../../src/components/MuscleMap';
 import { LEARN_EXERCISES } from '../../src/data/learnData.generated';
 import type { LearnExercise } from '../../src/data/learnTypes';
+import { useBackPress } from '../../src/hooks/useBackPress';
 import { useTheme } from '../../src/theme';
 
 type Category = LearnExercise['category'];
@@ -31,6 +32,13 @@ const EQUIPMENT_LABEL: Record<string, string> = {
 export default function LearnScreen() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = LEARN_EXERCISES.find((e) => e.id === selectedId) ?? null;
+
+  // 상세 화면에서 뒤로가기 → 목록
+  useBackPress(() => {
+    if (!selected) return false;
+    setSelectedId(null);
+    return true;
+  });
 
   return (
     <Screen>

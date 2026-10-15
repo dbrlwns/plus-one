@@ -21,6 +21,7 @@ export type Phase = 'ready' | 'countdown' | 'active' | 'rest' | 'transition' | '
 export type CueKind = 'countdown' | 'rep' | 'sec' | 'setDone' | 'restEnd' | 'finish';
 
 export const COUNTDOWN_FROM = 3;
+export const DEFAULT_TEMPO = 3;
 export const TEMPO_MIN = 0.5;
 export const TEMPO_MAX = 10;
 export const TEMPO_STEP = 0.5;
@@ -28,7 +29,8 @@ export const TEMPO_STEP = 0.5;
 export interface WorkoutState {
   plan: PlanItem[];
   restSec: number;
-  tempoSec: number;
+  /** 운동별 템포(초). 없는 운동은 DEFAULT_TEMPO */
+  tempos: Record<string, number>;
   /** 0.5초 틱 중 현재가 초의 두 번째 틱이면 1 */
   half: 0 | 1;
   phase: Phase;
@@ -55,14 +57,24 @@ export type WorkoutAction =
   | { type: 'SKIP_REST' }
   | { type: 'CONFIRM_NEXT' }
   | { type: 'RESET_SET' }
+  /** 지금 하는 운동의 템포를 바꾼다 */
   | { type: 'SET_TEMPO'; tempoSec: number }
   | { type: 'ABORT' };
 
-export function createInitialState(plan: PlanItem[], restSec: number, tempoSec: number): WorkoutState {
+export function clampTempo(sec: number): number {
+  const v = Math.round(sec / TEMPO_STEP) * TEMPO_STEP;
+  return Math.min(TEMPO_MAX, Math.max(TEMPO_MIN, v));
+}
+
+export function createInitialState(
+  plan: PlanItem[],
+  restSec: number,
+  tempos: Record<string, number> = {},
+): WorkoutState {
   return {
     plan,
     restSec,
-    tempoSec,
+    tempos,
     half: 0,
     phase: 'ready',
     exIdx: 0,
@@ -116,7 +128,12 @@ function endRest(state: WorkoutState): WorkoutState {
   return withCue(startCountdown(next), 'restEnd');
 }
 
-const tempoHalves = (state: WorkoutState) => Math.max(1, Math.round(state.tempoSec * 2));
+/** 지금 하는 운동의 템포(초) */
+export function currentTempo(state: WorkoutState): number {
+  return state.tempos[state.plan[state.exIdx].exerciseId] ?? DEFAULT_TEMPO;
+}
+
+const tempoHalves = (state: WorkoutState) => Math.max(1, Math.round(currentTempo(state) * 2));
 
 function tick(state: WorkoutState): WorkoutState {
   if (state.phase !== 'countdown' && state.phase !== 'active' && state.phase !== 'rest') return state;
@@ -179,11 +196,19 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
       return startCountdown({ ...state, results, restLeft: 0 });
     }
     case 'SET_TEMPO': {
-      const v = Math.round(action.tempoSec / TEMPO_STEP) * TEMPO_STEP;
-      return { ...state, tempoSec: Math.min(TEMPO_MAX, Math.max(TEMPO_MIN, v)) };
+      const id = state.plan[state.exIdx].exerciseId;
+      return { ...state, tempos: { ...state.tempos, [id]: clampTempo(action.tempoSec) } };
     }
-    case 'ABORT':
-      return state.phase === 'summary' ? state : { ...state, phase: 'summary' };
+    case 'ABORT': {
+      if (state.phase === 'summary') return state;
+      // 세트 도중에 끝내면 지금까지 한 반복 수도 기록한다
+      let results = state.results;
+      if (state.phase === 'active' && state.count > 0) {
+        results = state.results.map((r) => r.slice());
+        results[state.exIdx][state.setIdx] = state.count;
+      }
+      return { ...state, results, phase: 'summary' };
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Body, Btn, Card, Chip, Heading, Screen, Stepper, Sub } from '../../src/components/ui';
 import { WorkoutSession } from '../../src/components/WorkoutSession';
 import { WEEKDAYS, exercisesForPart, getExercise, unitOf, type Exercise, type Part } from '../../src/data/exercises';
+import { useBackPress } from '../../src/hooks/useBackPress';
 import { useAppData } from '../../src/state/AppData';
 import type { PlanItem } from '../../src/workout/machine';
 import { weekdayIndex } from '../../src/utils/date';
@@ -18,6 +19,13 @@ const FREE_PARTS: Part[] = ['상체', '하체', '밀기', '당기기', '전신']
 export default function WorkoutScreen() {
   const { routine } = useAppData();
   const [mode, setMode] = useState<Mode>({ kind: 'menu' });
+
+  // 자유 운동 설정/안내 화면 → 메뉴. 운동 중에는 WorkoutSession이 직접 처리하므로 여기서는 삼킨다.
+  useBackPress(() => {
+    if (mode.kind === 'menu') return false;
+    if (mode.kind !== 'session') setMode({ kind: 'menu' });
+    return true;
+  });
 
   const startRoutine = () => {
     const day = routine[weekdayIndex(new Date())];

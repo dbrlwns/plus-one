@@ -11,7 +11,7 @@ const KEYS = {
 } as const;
 
 export function defaultSettings(): Settings {
-  return { name: '', restSec: 90, tempoSec: 3, startDate: todayKey() };
+  return { name: '', restSec: 90, tempos: {}, startDate: todayKey() };
 }
 
 let itemSeq = 0;

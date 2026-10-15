@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Body, Btn, Card, Heading, Screen, Sub } from '../../src/components/ui';
+import { useBackPress } from '../../src/hooks/useBackPress';
 import { useAppData } from '../../src/state/AppData';
 import { useTheme } from '../../src/theme';
 import { confirmAction } from '../../src/utils/confirm';
@@ -44,6 +45,7 @@ function NumberField({
 
 export default function SettingsScreen() {
   const t = useTheme();
+  useBackPress();
   const { settings, updateSettings, resetAll } = useAppData();
 
   return (
@@ -68,7 +70,7 @@ export default function SettingsScreen() {
             value={settings.restSec}
             onCommit={(restSec) => updateSettings({ restSec })}
           />
-          <Sub>반복 템포(기본 3초)는 운동 중 화면에서 바로 조절할 수 있습니다.</Sub>
+          <Sub>반복 템포(기본 3초)는 운동 중 화면에서 바로 조절하며, 운동별로 저장됩니다.</Sub>
         </Card>
 
         <Card style={{ gap: 10 }}>

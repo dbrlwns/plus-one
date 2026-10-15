@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Body, Btn, Card, Heading, Screen, Sub } from '../../src/components/ui';
 import { unitOf } from '../../src/data/exercises';
+import { useBackPress } from '../../src/hooks/useBackPress';
 import { useAppData } from '../../src/state/AppData';
 import { useTheme } from '../../src/theme';
 import type { Routine, WorkoutRecord } from '../../src/types';
@@ -27,6 +28,7 @@ function statusOf(key: string, routine: Routine, byDate: Map<string, WorkoutReco
 
 export default function CalendarScreen() {
   const t = useTheme();
+  useBackPress();
   const { routine, records, settings } = useAppData();
   const today = todayKey();
   const [cursor, setCursor] = useState(() => {

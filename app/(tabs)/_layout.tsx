@@ -11,6 +11,8 @@ export default function TabsLayout() {
   const t = useTheme();
   return (
     <Tabs
+      // 뒤로가기로 다른 탭(달력)으로 튕기지 않게 한다. 종료 처리는 useBackPress에서 한다.
+      backBehavior="none"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: t.primary,

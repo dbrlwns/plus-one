@@ -3,7 +3,7 @@ import { createElement, useEffect, useState } from 'react';
 import { Image, Platform, StyleSheet, Text, View, type ImageSourcePropType } from 'react-native';
 import { useTheme } from '../theme';
 
-export const IMAGE_FRAME_MS = 500;
+export const IMAGE_FRAME_MS = 1500;
 const ASPECT = 850 / 567; // 원본 이미지 비율
 
 /**
@@ -32,13 +32,13 @@ function Frame({ source, visible }: { source: ImageSourcePropType; visible: bool
   return (
     <Image
       source={source}
-      resizeMode="contain"
-      style={[StyleSheet.absoluteFill, { opacity: visible ? 1 : 0 }]}
+      // 크기와 resizeMode를 style에 명시해서 원본 크기(850x567)로 그려지며 잘리는 일을 막는다
+      style={[StyleSheet.absoluteFill, { width: '100%', height: '100%', resizeMode: 'contain', opacity: visible ? 1 : 0 }]}
     />
   );
 }
 
-/** 번호 순서대로 0.5초마다 이미지를 돌려 보여준다. 모든 프레임을 미리 그려두고 투명도만 바꿔서 깜빡임을 막는다. */
+/** 번호 순서대로 1.5초마다 이미지를 돌려 보여준다. 모든 프레임을 미리 그려두고 투명도만 바꿔서 깜빡임을 막는다. */
 export function ExerciseImageLoop({ images }: { images: ImageSourcePropType[] }) {
   const t = useTheme();
   const [frame, setFrame] = useState(0);
@@ -69,6 +69,6 @@ export function ExerciseImageLoop({ images }: { images: ImageSourcePropType[] })
 }
 
 const styles = StyleSheet.create({
-  box: { width: '100%', aspectRatio: ASPECT, borderRadius: 14, overflow: 'hidden' },
+  box: { width: '100%', maxWidth: 520, alignSelf: 'center', aspectRatio: ASPECT, borderRadius: 14, overflow: 'hidden' },
   empty: { alignItems: 'center', justifyContent: 'center' },
 });

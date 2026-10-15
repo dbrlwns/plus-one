@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { playCue } from '../feedback';
 import { useAppData } from '../state/AppData';
@@ -13,6 +13,8 @@ import {
   isLastExercise,
   isLastSet,
   TEMPO_MAX,
+  clampTempo,
+  currentTempo,
   TEMPO_MIN,
   TEMPO_STEP,
   workoutReducer,
@@ -46,7 +48,7 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
   const t = useTheme();
   const { settings, addRecord, updateSettings } = useAppData();
   const [state, dispatch] = useReducer(workoutReducer, undefined, () =>
-    createInitialState(plan, settings.restSec, settings.tempoSec),
+    createInitialState(plan, settings.restSec, settings.tempos ?? {}),
   );
 
   // 운동 중 화면 꺼짐 방지
@@ -78,16 +80,45 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
 
   const setTempo = (tempoSec: number) => {
     dispatch({ type: 'SET_TEMPO', tempoSec });
-    updateSettings({ tempoSec: Math.min(TEMPO_MAX, Math.max(TEMPO_MIN, tempoSec)) });
+    // 운동별로 저장해서 다음에 같은 운동을 하면 그 템포로 시작한다
+    updateSettings({ tempos: { ...settings.tempos, [item.exerciseId]: clampTempo(tempoSec) } });
   };
 
   const item = state.plan[state.exIdx];
   const unit = unitOf(item.type);
+  const tempo = currentTempo(state);
   const setLabel = `세트 ${state.setIdx + 1} / ${item.sets}`;
   const nextEx = state.plan[state.exIdx + 1];
 
   const abort = () =>
-    confirmAction('운동 종료', '지금까지의 기록만 저장하고 운동을 끝낼까요?', () => dispatch({ type: 'ABORT' }));
+    confirmAction('운동 종료', '지금까지 한 기록을 저장하고 운동을 끝낼까요?', () => dispatch({ type: 'ABORT' }));
+
+  // 뒤로가기(안드로이드 하드웨어 키 / 웹 브라우저 뒤로가기)
+  // - 요약 화면, 시작 전 준비 화면: 그냥 나간다
+  // - 운동 중: "운동 종료" 버튼과 똑같이 기록 저장 후 끝낼지 묻는다
+  const backRef = useRef<() => void>(() => {});
+  useEffect(() => {
+    backRef.current = state.phase === 'summary' || state.phase === 'ready' ? onExit : abort;
+  });
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+        backRef.current();
+        return true;
+      });
+      return () => sub.remove();
+    }
+    if (Platform.OS === 'web') {
+      // 같은 주소의 기록을 하나 쌓아두고, 뒤로가기가 눌리면(popstate) 다시 쌓아서 페이지가 바뀌지 않게 한다
+      window.history.pushState({ workout: true }, '');
+      const onPop = () => {
+        window.history.pushState({ workout: true }, '');
+        backRef.current();
+      };
+      window.addEventListener('popstate', onPop);
+      return () => window.removeEventListener('popstate', onPop);
+    }
+  }, []);
 
   if (state.phase === 'summary') {
     const doneAny = state.results.some((r) => r.length > 0);
@@ -134,20 +165,20 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
             title="−"
             kind="secondary"
             size="sm"
-            disabled={state.tempoSec <= TEMPO_MIN}
-            onPress={() => setTempo(state.tempoSec - TEMPO_STEP)}
+            disabled={tempo <= TEMPO_MIN}
+            onPress={() => setTempo(tempo - TEMPO_STEP)}
           />
           <Text style={{ color: t.text, fontSize: 20, fontWeight: '800', minWidth: 64, textAlign: 'center' }}>
-            {state.tempoSec}초
+            {tempo}초
           </Text>
           <Btn
             title="+"
             kind="secondary"
             size="sm"
-            disabled={state.tempoSec >= TEMPO_MAX}
-            onPress={() => setTempo(state.tempoSec + TEMPO_STEP)}
+            disabled={tempo >= TEMPO_MAX}
+            onPress={() => setTempo(tempo + TEMPO_STEP)}
           />
-          <Sub>반복 1회당</Sub>
+          <Sub>{item.name} 반복 1회당</Sub>
         </View>
       ) : null}
 

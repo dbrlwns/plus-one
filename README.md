@@ -22,7 +22,7 @@ npm run android  # Android 에뮬레이터
 | `src/state/AppData.tsx` | 설정/루틴/기록 컨텍스트 (변경 시 자동 저장) |
 | `src/data/exercises.ts` | 기본 운동 DB (부위별) |
 | `app/(tabs)/learn.tsx` | 배우기 탭: 운동 목록 → 상세(순환 이미지, 자극 부위, 운동 방법) |
-| `src/components/ExerciseImageLoop.tsx` | 번호 순서대로 0.5초마다 이미지 순환 |
+| `src/components/ExerciseImageLoop.tsx` | 번호 순서대로 1.5초마다 이미지 순환 |
 | `src/components/MuscleMap.tsx` | react-native-body-highlighter로 자극 부위 표시 |
 | `repup-exercise-data/` | 운동 설명/이미지 원본 (free-exercise-db 기반) |
 | `scripts/gen-learn-data.js` | 위 JSON → `src/data/learnData.generated.ts` 변환 (데이터 수정 후 재실행) |

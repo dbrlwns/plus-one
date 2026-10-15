@@ -26,7 +26,6 @@ export default function TabsLayout() {
       <Tabs.Screen name="routine" options={{ title: '루틴', tabBarIcon: icon('📋') }} />
       <Tabs.Screen name="workout" options={{ title: '운동', tabBarIcon: icon('💪') }} />
       <Tabs.Screen name="learn" options={{ title: '배우기', tabBarIcon: icon('📖') }} />
-      <Tabs.Screen name="settings" options={{ title: '설정', tabBarIcon: icon('⚙️') }} />
     </Tabs>
   );
 }

@@ -59,6 +59,11 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
     };
   }, []);
 
+  // 운동 탭의 [시작]을 누르면 바로 3·2·1 카운트다운부터 시작한다
+  useEffect(() => {
+    dispatch({ type: 'START', now: Date.now() });
+  }, []);
+
   const ticking = state.phase === 'countdown' || state.phase === 'active' || state.phase === 'rest';
   useTicker(ticking, () => dispatch({ type: 'TICK' }));
 

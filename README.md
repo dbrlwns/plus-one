@@ -15,7 +15,7 @@ npm run android  # Android 에뮬레이터
 
 | 경로 | 역할 |
 | --- | --- |
-| `app/(tabs)/` | expo-router 하단 탭 5개: 달력(`index`), 루틴, 운동, 배우기, 설정 |
+| `app/(tabs)/` | expo-router 하단 탭 4개: 달력(`index`), 루틴, 운동, 배우기 (설정은 달력 우측 상단 아이콘 → `app/settings.tsx`) |
 | `src/workout/machine.ts` | 운동 진행 상태 머신 (UI와 분리된 순수 reducer) |
 | `src/components/WorkoutSession.tsx` | 상태 머신을 화면에 연결 (1초 틱, 소리/진동, 화면 꺼짐 방지) |
 | `src/storage/storage.ts` | AsyncStorage 저장/불러오기 모듈 |

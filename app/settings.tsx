@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Body, Btn, Card, Heading, Screen, Sub } from '../../src/components/ui';
-import { useBackPress } from '../../src/hooks/useBackPress';
-import { useAppData } from '../../src/state/AppData';
-import { useTheme } from '../../src/theme';
-import { confirmAction } from '../../src/utils/confirm';
+import { Body, Btn, Card, Heading, Screen, Sub } from '../src/components/ui';
+import { useAppData } from '../src/state/AppData';
+import { useTheme } from '../src/theme';
+import { confirmAction } from '../src/utils/confirm';
 
 function NumberField({
   label,
@@ -45,13 +45,18 @@ function NumberField({
 
 export default function SettingsScreen() {
   const t = useTheme();
-  useBackPress();
+  const router = useRouter();
+  // 스택 화면이라 안드로이드 뒤로가기는 기본 동작(이전 화면으로)을 쓴다
+  const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const { settings, updateSettings, resetAll } = useAppData();
 
   return (
     <Screen>
       <ScrollView contentContainerStyle={styles.content}>
-        <Heading>설정</Heading>
+        <View style={styles.header}>
+          <Btn title="‹ 뒤로" kind="ghost" size="sm" onPress={goBack} />
+          <Heading>설정</Heading>
+        </View>
 
         <Card style={{ gap: 14 }}>
           <View style={styles.row}>
@@ -93,6 +98,7 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   content: { padding: 16, gap: 16 },
+  header: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   input: { borderWidth: 1, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, fontSize: 16 },
 });

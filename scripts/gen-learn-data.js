@@ -10,12 +10,17 @@ const json = JSON.parse(fs.readFileSync(path.join(dataDir, 'exercises.ko.json'),
 
 const entries = json.exercises.map((e) => {
   const { images, instructionsEn, source, ...rest } = e;
-  const imgs = images
+  const sorted = images
     .slice()
-    .sort((a, b) => parseInt(path.basename(a), 10) - parseInt(path.basename(b), 10))
-    .map((p) => `require('../../repup-exercise-data/${p}')`);
+    .sort((a, b) => parseInt(path.basename(a), 10) - parseInt(path.basename(b), 10));
+  const imgs = sorted.map((p) => `require('../../repup-exercise-data/${p}')`);
+  // 목록용 썸네일 (scripts/gen-thumbs.js 로 생성). 없으면 원본을 쓴다.
+  const thumbs = sorted.map((p) => {
+    const t = p.replace(/^images\//, 'thumbs/');
+    return fs.existsSync(path.join(dataDir, t)) ? `require('../../repup-exercise-data/${t}')` : `require('../../repup-exercise-data/${p}')`;
+  });
   const body = JSON.stringify(rest, null, 2).replace(/\n}$/, '').replace(/^{/, '');
-  return `  {${body},\n    "images": [${imgs.join(', ')}],\n  }`;
+  return `  {${body},\n    "images": [${imgs.join(', ')}],\n    "thumbs": [${thumbs.join(', ')}],\n  }`;
 });
 
 const out = `// 자동 생성 파일 — 직접 수정하지 말고 scripts/gen-learn-data.js 를 다시 실행하세요.

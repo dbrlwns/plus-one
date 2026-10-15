@@ -1,4 +1,4 @@
-import { createInitialState, workoutReducer, buildRecord, type PlanItem } from '../src/workout/machine';
+import { createInitialState, workoutReducer, buildRecord, restWarningInfo, type PlanItem } from '../src/workout/machine';
 
 const plan: PlanItem[] = [
   { exerciseId: 'a', name: 'A', type: 'reps', sets: 2, target: 2 },
@@ -53,3 +53,15 @@ s = createInitialState(plan3, 1);
 s = workoutReducer(s, { type: 'START', now: 1 }); tick(3); tick(6); // 3초 템포 → 2회
 s = workoutReducer(s, { type: 'ABORT' });
 console.log('abort mid-set results:', JSON.stringify(s.results), s.phase);
+
+// --- 백그라운드 알림 예약 정보 (휴식 90초 설정, 10초 전 알림) ---
+const planN: PlanItem[] = [
+  { exerciseId: 'a', name: 'A', type: 'reps', sets: 2, target: 1 },
+  { exerciseId: 'b', name: 'B', type: 'reps', sets: 1, target: 1 },
+];
+s = createInitialState(planN, 90);
+console.log('not resting ->', JSON.stringify(restWarningInfo(s, 10)));
+s = workoutReducer(s, { type: 'START', now: 1 }); tick(3); tick(3);   // 1회 = 3초 → 세트 끝 → 휴식
+console.log('rest start (90s) ->', JSON.stringify(restWarningInfo(s, 10)));
+tick(30); console.log('rest 60s left ->', JSON.stringify(restWarningInfo(s, 10)));
+tick(52); console.log('rest 8s left ->', JSON.stringify(restWarningInfo(s, 10)));

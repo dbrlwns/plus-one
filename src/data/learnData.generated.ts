@@ -43,6 +43,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "원문의 손 간격(약 90cm)은 넓은 편이에요. 어깨너비보다 조금 넓게 잡아도 되고, 손목 보호를 위해 푸쉬업바 사용을 권장합니다.",
     "images": [require('../../repup-exercise-data/images/push-up/0.jpg'), require('../../repup-exercise-data/images/push-up/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/push-up/0.jpg'), require('../../repup-exercise-data/thumbs/push-up/1.jpg')],
   },
   {
   "id": "decline-push-up",
@@ -84,6 +85,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "집에서는 의자나 침대에 발을 올려도 됩니다. 발 위치가 높을수록 난이도가 올라가요.",
     "images": [require('../../repup-exercise-data/images/decline-push-up/0.jpg'), require('../../repup-exercise-data/images/decline-push-up/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/decline-push-up/0.jpg'), require('../../repup-exercise-data/thumbs/decline-push-up/1.jpg')],
   },
   {
   "id": "diamond-push-up",
@@ -125,6 +127,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "원문은 좁은 그립 푸쉬업이에요. 다이아몬드 푸쉬업은 양손 엄지·검지로 다이아몬드 모양을 만드는 변형이며, 손목이 불편하면 원문처럼 손을 어깨보다 살짝 좁게만 짚어도 됩니다.",
     "images": [require('../../repup-exercise-data/images/diamond-push-up/0.jpg'), require('../../repup-exercise-data/images/diamond-push-up/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/diamond-push-up/0.jpg'), require('../../repup-exercise-data/thumbs/diamond-push-up/1.jpg')],
   },
   {
   "id": "dips",
@@ -166,6 +169,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "처음에는 팔꿈치 90도 정도까지만 내려가세요. 상체를 앞으로 숙이면 가슴, 세우면 삼두에 더 자극이 갑니다.",
     "images": [require('../../repup-exercise-data/images/dips/0.jpg'), require('../../repup-exercise-data/images/dips/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/dips/0.jpg'), require('../../repup-exercise-data/thumbs/dips/1.jpg')],
   },
   {
   "id": "dumbbell-floor-press",
@@ -206,6 +210,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": null,
     "images": [require('../../repup-exercise-data/images/dumbbell-floor-press/0.jpg'), require('../../repup-exercise-data/images/dumbbell-floor-press/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/dumbbell-floor-press/0.jpg'), require('../../repup-exercise-data/thumbs/dumbbell-floor-press/1.jpg')],
   },
   {
   "id": "dumbbell-shoulder-press",
@@ -245,6 +250,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "등받이 있는 의자에 앉거나 서서 해도 됩니다.",
     "images": [require('../../repup-exercise-data/images/dumbbell-shoulder-press/0.jpg'), require('../../repup-exercise-data/images/dumbbell-shoulder-press/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/dumbbell-shoulder-press/0.jpg'), require('../../repup-exercise-data/thumbs/dumbbell-shoulder-press/1.jpg')],
   },
   {
   "id": "lateral-raise",
@@ -276,6 +282,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": null,
     "images": [require('../../repup-exercise-data/images/lateral-raise/0.jpg'), require('../../repup-exercise-data/images/lateral-raise/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/lateral-raise/0.jpg'), require('../../repup-exercise-data/thumbs/lateral-raise/1.jpg')],
   },
   {
   "id": "overhead-triceps-extension",
@@ -308,6 +315,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": null,
     "images": [require('../../repup-exercise-data/images/overhead-triceps-extension/0.jpg'), require('../../repup-exercise-data/images/overhead-triceps-extension/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/overhead-triceps-extension/0.jpg'), require('../../repup-exercise-data/thumbs/overhead-triceps-extension/1.jpg')],
   },
   {
   "id": "pull-up",
@@ -347,6 +355,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "어깨너비 그립이 어깨에 부담이 적어요. 올라가기 전에 어깨를 먼저 아래로 끌어내리고, 팔꿈치를 옆구리로 내리꽂는다는 느낌으로 당기세요.",
     "images": [require('../../repup-exercise-data/images/pull-up/0.jpg'), require('../../repup-exercise-data/images/pull-up/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/pull-up/0.jpg'), require('../../repup-exercise-data/thumbs/pull-up/1.jpg')],
   },
   {
   "id": "chin-up",
@@ -391,6 +400,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "손목·팔꿈치가 불편하면 W형 바의 꺾인 부분을 잡아보세요.",
     "images": [require('../../repup-exercise-data/images/chin-up/0.jpg'), require('../../repup-exercise-data/images/chin-up/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/chin-up/0.jpg'), require('../../repup-exercise-data/thumbs/chin-up/1.jpg')],
   },
   {
   "id": "one-arm-dumbbell-row",
@@ -437,6 +447,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "벤치 대신 의자나 침대에 손과 무릎을 짚어도 됩니다.",
     "images": [require('../../repup-exercise-data/images/one-arm-dumbbell-row/0.jpg'), require('../../repup-exercise-data/images/one-arm-dumbbell-row/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/one-arm-dumbbell-row/0.jpg'), require('../../repup-exercise-data/thumbs/one-arm-dumbbell-row/1.jpg')],
   },
   {
   "id": "dumbbell-reverse-fly",
@@ -470,6 +481,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "의자 끝에 앉아서 하거나, 서서 상체를 숙여 해도 같은 동작입니다.",
     "images": [require('../../repup-exercise-data/images/dumbbell-reverse-fly/0.jpg'), require('../../repup-exercise-data/images/dumbbell-reverse-fly/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/dumbbell-reverse-fly/0.jpg'), require('../../repup-exercise-data/thumbs/dumbbell-reverse-fly/1.jpg')],
   },
   {
   "id": "dumbbell-curl",
@@ -506,6 +518,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": null,
     "images": [require('../../repup-exercise-data/images/dumbbell-curl/0.jpg'), require('../../repup-exercise-data/images/dumbbell-curl/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/dumbbell-curl/0.jpg'), require('../../repup-exercise-data/thumbs/dumbbell-curl/1.jpg')],
   },
   {
   "id": "hammer-curl",
@@ -537,6 +550,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": null,
     "images": [require('../../repup-exercise-data/images/hammer-curl/0.jpg'), require('../../repup-exercise-data/images/hammer-curl/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/hammer-curl/0.jpg'), require('../../repup-exercise-data/thumbs/hammer-curl/1.jpg')],
   },
   {
   "id": "dead-hang",
@@ -578,6 +592,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "free-exercise-db에 양손 매달리기 항목이 없어 직접 작성한 설명입니다. 이미지가 없습니다.",
     "images": [],
+    "thumbs": [],
   },
   {
   "id": "dumbbell-squat",
@@ -631,6 +646,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "원문에는 '무릎이 발끝을 넘으면 안 된다'는 팁이 있지만, 최근에는 발 전체로 무게를 지지하고 무릎이 발끝 방향과 일치하면 발끝을 넘어도 괜찮다고 봅니다.",
     "images": [require('../../repup-exercise-data/images/dumbbell-squat/0.jpg'), require('../../repup-exercise-data/images/dumbbell-squat/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/dumbbell-squat/0.jpg'), require('../../repup-exercise-data/thumbs/dumbbell-squat/1.jpg')],
   },
   {
   "id": "bulgarian-split-squat",
@@ -673,6 +689,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "뒷발은 의자나 침대에 올리면 됩니다. 한쪽 세트를 마친 뒤 다리를 바꿔 반복하세요.",
     "images": [require('../../repup-exercise-data/images/bulgarian-split-squat/0.jpg'), require('../../repup-exercise-data/images/bulgarian-split-squat/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/bulgarian-split-squat/0.jpg'), require('../../repup-exercise-data/thumbs/bulgarian-split-squat/1.jpg')],
   },
   {
   "id": "dumbbell-romanian-deadlift",
@@ -715,6 +732,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "원문은 스티프 레그 데드리프트예요. 루마니안 데드리프트는 거의 같지만 엉덩이를 뒤로 빼는 느낌을 더 강조하고, 덤벨이 허벅지를 따라 내려갑니다.",
     "images": [require('../../repup-exercise-data/images/dumbbell-romanian-deadlift/0.jpg'), require('../../repup-exercise-data/images/dumbbell-romanian-deadlift/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/dumbbell-romanian-deadlift/0.jpg'), require('../../repup-exercise-data/thumbs/dumbbell-romanian-deadlift/1.jpg')],
   },
   {
   "id": "single-leg-romanian-deadlift",
@@ -755,6 +773,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "원문은 케틀벨 동작이에요. 덤벨 하나를 한 손에 들거나 양손에 하나씩 들고 해도 됩니다.",
     "images": [require('../../repup-exercise-data/images/single-leg-romanian-deadlift/0.jpg'), require('../../repup-exercise-data/images/single-leg-romanian-deadlift/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/single-leg-romanian-deadlift/0.jpg'), require('../../repup-exercise-data/thumbs/single-leg-romanian-deadlift/1.jpg')],
   },
   {
   "id": "reverse-lunge",
@@ -802,6 +821,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": null,
     "images": [require('../../repup-exercise-data/images/reverse-lunge/0.jpg'), require('../../repup-exercise-data/images/reverse-lunge/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/reverse-lunge/0.jpg'), require('../../repup-exercise-data/thumbs/reverse-lunge/1.jpg')],
   },
   {
   "id": "glute-bridge",
@@ -837,6 +857,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": null,
     "images": [require('../../repup-exercise-data/images/glute-bridge/0.jpg'), require('../../repup-exercise-data/images/glute-bridge/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/glute-bridge/0.jpg'), require('../../repup-exercise-data/thumbs/glute-bridge/1.jpg')],
   },
   {
   "id": "single-leg-glute-bridge",
@@ -873,6 +894,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": null,
     "images": [require('../../repup-exercise-data/images/single-leg-glute-bridge/0.jpg'), require('../../repup-exercise-data/images/single-leg-glute-bridge/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/single-leg-glute-bridge/0.jpg'), require('../../repup-exercise-data/thumbs/single-leg-glute-bridge/1.jpg')],
   },
   {
   "id": "calf-raise",
@@ -904,6 +926,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "받침 대신 계단 끝을 활용해도 됩니다.",
     "images": [require('../../repup-exercise-data/images/calf-raise/0.jpg'), require('../../repup-exercise-data/images/calf-raise/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/calf-raise/0.jpg'), require('../../repup-exercise-data/thumbs/calf-raise/1.jpg')],
   },
   {
   "id": "leg-raise",
@@ -934,6 +957,7 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "원문은 벤치 위 동작이에요. 집에서는 바닥에 누워서 해도 되며, 허리가 뜨지 않게 바닥에 붙이고 하세요.",
     "images": [require('../../repup-exercise-data/images/leg-raise/0.jpg'), require('../../repup-exercise-data/images/leg-raise/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/leg-raise/0.jpg'), require('../../repup-exercise-data/thumbs/leg-raise/1.jpg')],
   },
   {
   "id": "hanging-knee-raise",
@@ -964,5 +988,6 @@ export const LEARN_EXERCISES: LearnExercise[] = [
   ],
   "noteKo": "원문은 다리를 편 채 올리는 행잉 레그레이즈(고급)예요. 니레이즈는 무릎을 굽혀 가슴 쪽으로 당기는 쉬운 버전입니다.",
     "images": [require('../../repup-exercise-data/images/hanging-knee-raise/0.jpg'), require('../../repup-exercise-data/images/hanging-knee-raise/1.jpg')],
+    "thumbs": [require('../../repup-exercise-data/thumbs/hanging-knee-raise/0.jpg'), require('../../repup-exercise-data/thumbs/hanging-knee-raise/1.jpg')],
   },
 ];

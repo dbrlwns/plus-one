@@ -23,4 +23,6 @@ export interface LearnExercise {
   noteKo: string | null;
   /** 번호 순서(0, 1, 2 ...)대로 정렬된 이미지. 없을 수 있다. */
   images: ImageSourcePropType[];
+  /** 목록용 작은 이미지(같은 순서). */
+  thumbs: ImageSourcePropType[];
 }

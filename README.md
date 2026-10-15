@@ -25,6 +25,7 @@ npm run android  # Android 에뮬레이터
 | `src/components/ExerciseImageLoop.tsx` | 번호 순서대로 1.5초마다 이미지 순환 |
 | `src/components/MuscleMap.tsx` | react-native-body-highlighter로 자극 부위 표시 |
 | `repup-exercise-data/` | 운동 설명/이미지 원본 (free-exercise-db 기반) |
+| `scripts/gen-thumbs.js` | 목록용 작은 이미지(`repup-exercise-data/thumbs/`) 생성, macOS `sips` 사용 |
 | `scripts/gen-learn-data.js` | 위 JSON → `src/data/learnData.generated.ts` 변환 (데이터 수정 후 재실행) |
 | `scripts/gen-sounds.js` | 알림음(WAV) 생성 |
 | `scripts/machine-check.ts` | 상태 머신 흐름 점검 (`npx tsx scripts/machine-check.ts`) |

@@ -2,6 +2,7 @@ import { useEffect, useReducer, useRef } from 'react';
 import { BackHandler, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { playCue } from '../feedback';
+import { useRestBackgroundAlert } from '../hooks/useRestBackgroundAlert';
 import { useAppData } from '../state/AppData';
 import { useTheme } from '../theme';
 import { unitOf } from '../data/exercises';
@@ -58,6 +59,9 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
       void deactivateKeepAwake(KEEP_AWAKE_TAG).catch(() => {});
     };
   }, []);
+
+  // 휴식 중 앱이 백그라운드로 가면 휴식 종료 10초 전에 알림
+  useRestBackgroundAlert(state);
 
   // 운동 탭의 [시작]을 누르면 바로 3·2·1 카운트다운부터 시작한다
   useEffect(() => {

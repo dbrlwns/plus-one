@@ -212,6 +212,19 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
   }
 }
 
+/**
+ * 앱이 백그라운드로 갔을 때 예약할 "휴식 종료 임박" 알림 정보.
+ * 휴식 중이고 남은 시간이 lead초보다 길 때만 있다 (seconds = 지금부터 알림까지 남은 초).
+ */
+export function restWarningInfo(state: WorkoutState, leadSec: number): { seconds: number; body: string } | null {
+  if (state.phase !== 'rest' || state.restLeft <= leadSec) return null;
+  const item = state.plan[state.exIdx];
+  const next = state.plan[state.exIdx + 1];
+  const body =
+    isLastSet(state) && next ? `다음 운동: ${next.name}` : `${item.name} 세트 ${state.setIdx + 2} / ${item.sets} 준비하세요`;
+  return { seconds: state.restLeft - leadSec, body };
+}
+
 /** 수행한 세트가 하나라도 있는 운동만 기록으로 만든다. 없으면 null. */
 export function buildRecord(state: WorkoutState): WorkoutRecord | null {
   const exercises: RecordExercise[] = [];

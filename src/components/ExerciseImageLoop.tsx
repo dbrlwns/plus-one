@@ -1,5 +1,5 @@
 import { Asset } from 'expo-asset';
-import { createElement, useEffect, useState } from 'react';
+import { createElement, useSyncExternalStore } from 'react';
 import { Image, Platform, StyleSheet, Text, View, type ImageSourcePropType } from 'react-native';
 import { useTheme } from '../theme';
 
@@ -38,29 +38,51 @@ function Frame({ source, visible }: { source: ImageSourcePropType; visible: bool
   );
 }
 
-/** 번호 순서대로 1.5초마다 이미지를 돌려 보여준다. 모든 프레임을 미리 그려두고 투명도만 바꿔서 깜빡임을 막는다. */
-export function ExerciseImageLoop({ images }: { images: ImageSourcePropType[] }) {
-  const t = useTheme();
-  const [frame, setFrame] = useState(0);
-  const count = images.length;
+// 화면 안의 모든 이미지가 타이머 하나를 같이 쓴다. (카드마다 setInterval을 두면 목록에서 렉이 생긴다)
+let tickCount = 0;
+let timer: ReturnType<typeof setInterval> | null = null;
+const listeners = new Set<() => void>();
 
-  useEffect(() => {
-    setFrame(0);
-    if (count <= 1) return;
-    const id = setInterval(() => setFrame((f) => (f + 1) % count), IMAGE_FRAME_MS);
-    return () => clearInterval(id);
-  }, [count, images]);
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  if (!timer) {
+    timer = setInterval(() => {
+      tickCount += 1;
+      listeners.forEach((l) => l());
+    }, IMAGE_FRAME_MS);
+  }
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0 && timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+}
+const getTick = () => tickCount;
+
+/** 번호 순서대로 1.5초마다 이미지를 돌려 보여준다. 모든 프레임을 미리 그려두고 투명도만 바꿔서 깜빡임을 막는다. */
+export function ExerciseImageLoop({ images, width }: { images: ImageSourcePropType[]; width?: number }) {
+  const t = useTheme();
+  const count = images.length;
+  const tick = useSyncExternalStore(subscribe, getTick);
+  const frame = count > 1 ? tick % count : 0;
+
+  // width를 주면 그 크기의 작은 썸네일(목록용), 안 주면 화면 너비에 맞춘다(상세용)
+  const size = width ? { width, maxWidth: width, borderRadius: 10 } : null;
 
   if (count === 0) {
     return (
-      <View style={[styles.box, styles.empty, { backgroundColor: t.chip }]}>
-        <Text style={{ color: t.subtext }}>이미지가 없는 운동이에요</Text>
+      <View style={[styles.box, styles.empty, size, { backgroundColor: t.chip }]}>
+        <Text style={{ color: t.subtext, fontSize: width ? 11 : 14, textAlign: 'center' }}>
+          {width ? '이미지 없음' : '이미지가 없는 운동이에요'}
+        </Text>
       </View>
     );
   }
 
   return (
-    <View style={[styles.box, { backgroundColor: '#FFFFFF' }]}>
+    <View style={[styles.box, size, { backgroundColor: '#FFFFFF' }]}>
       {images.map((src, i) => (
         <Frame key={i} source={src} visible={i === frame} />
       ))}

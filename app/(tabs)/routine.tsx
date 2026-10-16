@@ -88,14 +88,17 @@ export default function RoutineScreen() {
             {WEEKDAYS.map((_, i) => (
               // 페이지 높이를 고정해야 안쪽 세로 스크롤이 제대로 동작한다
               <View key={i} style={{ width: pageWidth, height: size.height }}>
-                <DayPage
-                  dayIdx={i}
-                  day={routine[i]}
-                  setRoutine={setRoutine}
-                  picking={picking && i === dayIdx}
-                  onTogglePicking={togglePicking}
-                  onClosePicking={closePicking}
-                />
+                {/* 현재 요일과 양옆 요일만 그린다. 7개를 전부 그리면 탭을 열 때 오래 걸린다 */}
+                {Math.abs(i - dayIdx) <= 1 ? (
+                  <DayPage
+                    dayIdx={i}
+                    day={routine[i]}
+                    setRoutine={setRoutine}
+                    picking={picking && i === dayIdx}
+                    onTogglePicking={togglePicking}
+                    onClosePicking={closePicking}
+                  />
+                ) : null}
               </View>
             ))}
           </ScrollView>

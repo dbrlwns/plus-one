@@ -1,7 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { useMemo, useRef, useState } from 'react';
-import { PanResponder, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  PanResponder,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { Body, Btn, Card, Heading, Screen, Sub } from '../../src/components/ui';
 import { unitOf } from '../../src/data/exercises';
 import { useBackPress } from '../../src/hooks/useBackPress';
@@ -80,7 +90,8 @@ export default function CalendarScreen() {
 
   return (
     <Screen>
-      <ScrollView contentContainerStyle={styles.content}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <View style={styles.titleRow}>
           <Heading>{settings.name ? `${settings.name}님의 기록` : '운동 기록'}</Heading>
           <Pressable
@@ -124,14 +135,16 @@ export default function CalendarScreen() {
                       style={[
                         styles.dayNum,
                         {
-                          backgroundColor: isToday ? t.primary : 'transparent',
-                          borderColor: isSel ? t.text : 'transparent',
+                          // 선택한 날짜는 은은한 배경으로만 표시한다
+                          backgroundColor: isSel ? t.chip : 'transparent',
+                          borderColor: 'transparent',
                         },
                       ]}
                     >
                       <Text
                         style={{
-                          color: isToday ? t.onPrimary : t.text,
+                          // 오늘은 파란 글씨로만 표시한다
+                          color: isToday ? t.primary : t.text,
                           fontWeight: isToday ? '900' : '600',
                           fontSize: 15,
                         }}
@@ -192,13 +205,54 @@ export default function CalendarScreen() {
             ))
           )}
         </Card>
+
+        <NoteCard key={selected} dateKey={selected} />
       </ScrollView>
+      </KeyboardAvoidingView>
     </Screen>
+  );
+}
+
+/** 선택한 날짜에 메모를 남긴다. 입력을 멈추면 자동으로 저장된다. */
+function NoteCard({ dateKey }: { dateKey: string }) {
+  const t = useTheme();
+  const { notes, setNote } = useAppData();
+  const [text, setText] = useState(notes[dateKey] ?? '');
+  const textRef = useRef(text);
+  textRef.current = text;
+
+  // 타자를 칠 때마다 전체 상태를 바꾸지 않고, 잠깐 멈추면 한 번 저장한다
+  useEffect(() => {
+    const id = setTimeout(() => setNote(dateKey, text), 500);
+    return () => clearTimeout(id);
+  }, [dateKey, text, setNote]);
+
+  // 다른 날짜를 선택하거나 화면을 떠날 때 마지막 내용을 저장한다
+  useEffect(() => () => setNote(dateKey, textRef.current), [dateKey, setNote]);
+
+  return (
+    <Card style={{ gap: 10 }}>
+      <View style={styles.monthRow}>
+        <Body style={{ fontWeight: '800', fontSize: 18 }}>기록하기</Body>
+        <Sub>{formatKeyKorean(dateKey)}</Sub>
+      </View>
+      <TextInput
+        value={text}
+        onChangeText={setText}
+        multiline
+        placeholder="이 날 남기고 싶은 메모를 적어보세요 (컨디션, 느낀 점 등)"
+        placeholderTextColor={t.subtext}
+        textAlignVertical="top"
+        style={[styles.noteInput, { color: t.text, borderColor: t.border, backgroundColor: t.bg }]}
+      />
+      <Sub>입력을 멈추면 자동으로 저장돼요.</Sub>
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
   content: { padding: 16, gap: 16 },
+  noteInput: { minHeight: 120, borderWidth: 1, borderRadius: 12, padding: 12, fontSize: 16 },
   titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   monthRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 },
   weekRow: { flexDirection: 'row' },

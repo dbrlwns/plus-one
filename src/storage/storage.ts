@@ -8,10 +8,11 @@ const KEYS = {
   settings: 'plusone/settings',
   routine: 'plusone/routine',
   records: 'plusone/records',
+  notes: 'plusone/notes',
 } as const;
 
 export function defaultSettings(): Settings {
-  return { name: '', restSec: 90, tempos: {}, startDate: todayKey() };
+  return { name: '', restSec: 90, theme: 'system', tempos: {}, startDate: todayKey() };
 }
 
 let itemSeq = 0;
@@ -76,6 +77,14 @@ export async function loadRecords(): Promise<WorkoutRecord[]> {
   return (await readJson<WorkoutRecord[]>(KEYS.records)) ?? [];
 }
 export const saveRecords = (r: WorkoutRecord[]) => writeJson(KEYS.records, r);
+
+/** 날짜(YYYY-MM-DD) → 그날의 메모 */
+export type Notes = Record<string, string>;
+
+export async function loadNotes(): Promise<Notes> {
+  return (await readJson<Notes>(KEYS.notes)) ?? {};
+}
+export const saveNotes = (n: Notes) => writeJson(KEYS.notes, n);
 
 export async function clearAll(): Promise<void> {
   try {

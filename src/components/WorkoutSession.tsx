@@ -1,4 +1,5 @@
-import { useEffect, useReducer, useRef } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { BackHandler, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { playCue } from '../feedback';
@@ -129,6 +130,21 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
     }
   }, []);
 
+  // 운동 완료 화면을 본 뒤 다른 탭으로 나가면, 돌아왔을 때 완료 화면이 계속 떠 있지 않게 운동 메뉴로 돌려놓는다
+  const phaseRef = useRef(state.phase);
+  const onExitRef = useRef(onExit);
+  useEffect(() => {
+    phaseRef.current = state.phase;
+    onExitRef.current = onExit;
+  });
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        if (phaseRef.current === 'summary') onExitRef.current();
+      };
+    }, []),
+  );
+
   if (state.phase === 'summary') {
     const doneAny = state.results.some((r) => r.length > 0);
     return (
@@ -187,7 +203,6 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
             disabled={tempo >= TEMPO_MAX}
             onPress={() => setTempo(tempo + TEMPO_STEP)}
           />
-          <Sub>{item.name} 반복 1회당</Sub>
         </View>
       ) : null}
 

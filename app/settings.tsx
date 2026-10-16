@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Body, Btn, Card, Heading, Screen, Sub } from '../src/components/ui';
+import { Body, Btn, Card, Chip, Heading, Screen, Sub } from '../src/components/ui';
 import { getExercise, unitOf } from '../src/data/exercises';
 import { ROUTINE_PRESETS, presetToRoutine, type RoutinePreset } from '../src/data/routinePresets';
 import { useAppData } from '../src/state/AppData';
 import { useTheme } from '../src/theme';
 import { confirmAction, notify } from '../src/utils/confirm';
 import { WEEKDAYS } from '../src/data/exercises';
+
+const THEME_OPTIONS: { value: 'system' | 'light' | 'dark'; label: string }[] = [
+  { value: 'system', label: '시스템' },
+  { value: 'light', label: '라이트' },
+  { value: 'dark', label: '다크' },
+];
 
 function NumberField({
   label,
@@ -89,6 +95,22 @@ export default function SettingsScreen() {
         </Card>
 
         <Card style={{ gap: 10 }}>
+          <Body style={{ fontWeight: '700' }}>화면 테마</Body>
+          <View style={styles.themeRow}>
+            {THEME_OPTIONS.map((o) => (
+              <View key={o.value} style={{ flex: 1 }}>
+                <Chip
+                  label={o.label}
+                  selected={(settings.theme ?? 'system') === o.value}
+                  onPress={() => updateSettings({ theme: o.value })}
+                />
+              </View>
+            ))}
+          </View>
+          <Sub>"시스템"은 휴대폰의 라이트/다크 설정을 따라가요.</Sub>
+        </Card>
+
+        <Card style={{ gap: 10 }}>
           <Body style={{ fontWeight: '700' }}>루틴 불러오기</Body>
           <Sub>미리 만들어 둔 루틴을 골라 불러올 수 있어요. 불러오면 지금 루틴이 바뀌고, 운동 기록은 그대로예요.</Sub>
           {ROUTINE_PRESETS.map((p) => {
@@ -154,6 +176,7 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   content: { padding: 16, gap: 16 },
+  themeRow: { flexDirection: 'row', gap: 8 },
   preset: { borderWidth: 1, borderRadius: 12, padding: 12 },
   presetHead: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 8 },

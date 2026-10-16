@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppDataProvider, useAppData } from '../src/state/AppData';
-import { useTheme } from '../src/theme';
+import { ThemeProvider, useTheme } from '../src/theme';
 
 function Root() {
   const { ready } = useAppData();
@@ -17,7 +17,7 @@ function Root() {
   }
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style={t.mode === 'dark' ? 'light' : 'dark'} />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: t.bg } }} />
     </>
   );
@@ -27,7 +27,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <AppDataProvider>
-        <Root />
+        <ThemeProvider>
+          <Root />
+        </ThemeProvider>
       </AppDataProvider>
     </SafeAreaProvider>
   );

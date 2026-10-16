@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useMemo, useRef, useState } from 'react';
+import { PanResponder, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Body, Btn, Card, Chip, Heading, Screen, Stepper, Sub } from '../../src/components/ui';
 import { WorkoutSession } from '../../src/components/WorkoutSession';
 import { WEEKDAYS, exercisesForPart, getExercise, unitOf, type Exercise, type Part } from '../../src/data/exercises';
@@ -26,11 +26,29 @@ export default function WorkoutScreen() {
   });
 
   const todayIdx = weekdayIndex(new Date());
-  const today = routine[todayIdx];
-  const isRest = today.part === '휴식';
+  // 오늘 대신 다른 요일의 루틴으로도 운동할 수 있다 (화살표 또는 좌우로 쓸어 넘기기)
+  const [dayIdx, setDayIdx] = useState(todayIdx);
+  const isToday = dayIdx === todayIdx;
+  const day = routine[dayIdx];
+  const isRest = day.part === '휴식';
+  const dayName = isToday ? '오늘' : `${WEEKDAYS[dayIdx]}요일`;
+
+  const shiftDay = (delta: number) => setDayIdx((i) => (i + delta + 7) % 7);
+  const shiftRef = useRef(shiftDay);
+  shiftRef.current = shiftDay;
+  const swipe = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponderCapture: (_, g) => Math.abs(g.dx) > 20 && Math.abs(g.dx) > Math.abs(g.dy) * 2,
+      onPanResponderRelease: (_, g) => {
+        if (Math.abs(g.dx) < 50) return;
+        shiftRef.current(g.dx < 0 ? 1 : -1);
+      },
+    }),
+  ).current;
+
   const plan: PlanItem[] = isRest
     ? []
-    : today.items.flatMap((it) => {
+    : day.items.flatMap((it) => {
         const ex = getExercise(it.exerciseId);
         return ex ? [{ exerciseId: ex.id, name: ex.name, type: ex.type, sets: it.sets, target: it.target }] : [];
       });
@@ -56,40 +74,68 @@ export default function WorkoutScreen() {
 
   return (
     <Screen>
-      <ScrollView contentContainerStyle={styles.content} style={{ flex: 1 }}>
-        <Heading>운동</Heading>
+      <View style={{ flex: 1 }} {...swipe.panHandlers}>
+        <ScrollView contentContainerStyle={styles.content} style={{ flex: 1 }}>
+          <Heading>운동</Heading>
 
-        <Card style={{ gap: 6 }}>
-          <Sub>오늘 ({WEEKDAYS[todayIdx]}요일) 루틴</Sub>
-          <Body style={{ fontWeight: '800', fontSize: 20 }}>
-            {today.part}
-            {!isRest && plan.length > 0 ? ` · 운동 ${plan.length}개` : ''}
-          </Body>
-        </Card>
+          <Card style={styles.dayCard}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="이전 요일"
+              hitSlop={12}
+              onPress={() => shiftDay(-1)}
+              style={styles.arrow}
+            >
+              <Text style={{ color: t.text, fontSize: 28 }}>‹</Text>
+            </Pressable>
+            <View style={{ flex: 1, alignItems: 'center', gap: 4 }}>
+              <Sub>{isToday ? `오늘 (${WEEKDAYS[dayIdx]}요일) 루틴` : `${WEEKDAYS[dayIdx]}요일 루틴`}</Sub>
+              <Body style={{ fontWeight: '800', fontSize: 20 }}>
+                {day.part}
+                {!isRest && plan.length > 0 ? ` · 운동 ${plan.length}개` : ''}
+              </Body>
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="다음 요일"
+              hitSlop={12}
+              onPress={() => shiftDay(1)}
+              style={styles.arrow}
+            >
+              <Text style={{ color: t.text, fontSize: 28 }}>›</Text>
+            </Pressable>
+          </Card>
 
-        {isRest ? (
-          <Card style={{ gap: 6 }}>
-            <Body style={{ fontWeight: '800', fontSize: 18 }}>오늘은 휴식일이에요 😴</Body>
-            <Sub>그래도 운동하고 싶다면 아래의 "자유 운동 하기"를 눌러보세요.</Sub>
-          </Card>
-        ) : plan.length === 0 ? (
-          <Card style={{ gap: 6 }}>
-            <Body style={{ fontWeight: '800', fontSize: 18 }}>오늘 루틴에 운동이 없어요</Body>
-            <Sub>루틴 탭에서 오늘 요일에 운동을 추가하거나, 아래의 "자유 운동 하기"를 눌러보세요.</Sub>
-          </Card>
-        ) : (
-          plan.map((p, i) => (
-            <Card key={i} style={styles.planRow}>
-              <Text style={{ color: t.subtext, fontWeight: '800', width: 22 }}>{i + 1}</Text>
-              <Text style={{ color: t.text, fontSize: 17, fontWeight: '700', flex: 1 }}>{p.name}</Text>
+          {isRest ? (
+            <Card style={{ gap: 6 }}>
+              <Body style={{ fontWeight: '800', fontSize: 18 }}>
+                {isToday ? '오늘은 휴식일이에요 😴' : `${WEEKDAYS[dayIdx]}요일은 휴식일이에요 😴`}
+              </Body>
               <Sub>
-                {p.sets}세트 × {p.target}
-                {unitOf(p.type)}
+                {isToday
+                  ? '그래도 운동하고 싶다면 아래의 "자유 운동 하기"를 눌러보세요.'
+                  : '다른 요일로 넘기거나 아래의 "자유 운동 하기"를 눌러보세요.'}
               </Sub>
             </Card>
-          ))
-        )}
-      </ScrollView>
+          ) : plan.length === 0 ? (
+            <Card style={{ gap: 6 }}>
+              <Body style={{ fontWeight: '800', fontSize: 18 }}>{dayName} 루틴에 운동이 없어요</Body>
+              <Sub>루틴 탭에서 운동을 추가하거나, 아래의 "자유 운동 하기"를 눌러보세요.</Sub>
+            </Card>
+          ) : (
+            plan.map((p, i) => (
+              <Card key={i} style={styles.planRow}>
+                <Text style={{ color: t.subtext, fontWeight: '800', width: 22 }}>{i + 1}</Text>
+                <Text style={{ color: t.text, fontSize: 17, fontWeight: '700', flex: 1 }}>{p.name}</Text>
+                <Sub>
+                  {p.sets}세트 × {p.target}
+                  {unitOf(p.type)}
+                </Sub>
+              </Card>
+            ))
+          )}
+        </ScrollView>
+      </View>
 
       <View style={styles.bottom}>
         <Pressable accessibilityRole="button" hitSlop={8} onPress={() => setMode({ kind: 'free' })}>
@@ -188,6 +234,8 @@ function FreeSetup({ onBack, onStart }: { onBack: () => void; onStart: (plan: Pl
 
 const styles = StyleSheet.create({
   content: { padding: 16, gap: 14 },
+  dayCard: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14 },
+  arrow: { width: 36, height: 36, alignItems: 'center', justifyContent: 'center' },
   planRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 12 },
   bottom: { paddingHorizontal: 16, paddingBottom: 12, paddingTop: 8, gap: 10 },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },

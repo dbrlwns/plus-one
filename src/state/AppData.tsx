@@ -4,12 +4,15 @@ import {
   clearAll,
   defaultRoutine,
   defaultSettings,
+  loadNotes,
   loadRecords,
   loadRoutine,
   loadSettings,
+  saveNotes,
   saveRecords,
   saveRoutine,
   saveSettings,
+  type Notes,
 } from '../storage/storage';
 import type { Routine, Settings, WorkoutRecord } from '../types';
 
@@ -18,6 +21,9 @@ interface AppData {
   settings: Settings;
   routine: Routine;
   records: WorkoutRecord[];
+  notes: Notes;
+  /** 그 날의 메모를 저장한다. 비어 있으면 지운다. */
+  setNote: (date: string, text: string) => void;
   updateSettings: (patch: Partial<Settings>) => void;
   setRoutine: (next: Routine | ((prev: Routine) => Routine)) => void;
   addRecord: (record: WorkoutRecord) => void;
@@ -66,15 +72,17 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [routine, setRoutineState] = useState<Routine>(defaultRoutine);
   const [records, setRecords] = useState<WorkoutRecord[]>([]);
+  const [notes, setNotes] = useState<Notes>({});
 
   useEffect(() => {
     let alive = true;
     (async () => {
-      const [s, r, rec] = await Promise.all([loadSettings(), loadRoutine(), loadRecords()]);
+      const [s, r, rec, n] = await Promise.all([loadSettings(), loadRoutine(), loadRecords(), loadNotes()]);
       if (!alive) return;
       setSettings(s);
       setRoutineState(r);
       setRecords(rec);
+      setNotes(n);
       setReady(true);
     })();
     return () => {
@@ -86,6 +94,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   useDebouncedSave(settings, ready, saveSettings);
   useDebouncedSave(routine, ready, saveRoutine);
   useDebouncedSave(records, ready, saveRecords);
+  useDebouncedSave(notes, ready, saveNotes);
 
   const updateSettings = useCallback((patch: Partial<Settings>) => {
     setSettings((prev) => ({ ...prev, ...patch }));
@@ -93,6 +102,16 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
 
   const setRoutine = useCallback((next: Routine | ((prev: Routine) => Routine)) => {
     setRoutineState(next);
+  }, []);
+
+  const setNote = useCallback((date: string, text: string) => {
+    setNotes((prev) => {
+      if ((prev[date] ?? '') === text) return prev;
+      const next = { ...prev };
+      if (text.trim() === '') delete next[date];
+      else next[date] = text;
+      return next;
+    });
   }, []);
 
   const addRecord = useCallback((record: WorkoutRecord) => {
@@ -104,11 +123,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     setSettings(defaultSettings());
     setRoutineState(defaultRoutine());
     setRecords([]);
+    setNotes({});
   }, []);
 
   const value = useMemo(
-    () => ({ ready, settings, routine, records, updateSettings, setRoutine, addRecord, resetAll }),
-    [ready, settings, routine, records, updateSettings, setRoutine, addRecord, resetAll],
+    () => ({ ready, settings, routine, records, notes, setNote, updateSettings, setRoutine, addRecord, resetAll }),
+    [ready, settings, routine, records, notes, setNote, updateSettings, setRoutine, addRecord, resetAll],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

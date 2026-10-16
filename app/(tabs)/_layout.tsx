@@ -13,10 +13,13 @@ export default function TabsLayout() {
     <Tabs
       // 뒤로가기로 다른 탭(달력)으로 튕기지 않게 한다. 종료 처리는 useBackPress에서 한다.
       backBehavior="none"
+      // 안 보이는 탭을 화면 계층에서 떼어내면(안드로이드 기본값) 다시 돌아올 때 붙이고 레이아웃을 다시 잡느라 탭 전환이 끊긴다
+      detachInactiveScreens={false}
       screenOptions={{
         headerShown: false,
-        // 안 보이는 탭은 얼려서 루틴을 고칠 때 달력/운동 탭까지 다시 그려지지 않게 한다
-        freezeOnBlur: true,
+        // 탭을 처음 열 때 화면을 만드느라 생기는 끊김을 없애려고 시작할 때 미리 만들어 둔다.
+        // (freezeOnBlur는 탭으로 돌아올 때마다 화면을 다시 그려서 오히려 끊김을 만들 수 있어 쓰지 않는다)
+        lazy: false,
         tabBarActiveTintColor: t.primary,
         tabBarInactiveTintColor: t.subtext,
         tabBarStyle: { backgroundColor: t.card, borderTopColor: t.border },

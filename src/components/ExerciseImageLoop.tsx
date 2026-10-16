@@ -1,4 +1,5 @@
 import { Asset } from 'expo-asset';
+import { useIsFocused } from 'expo-router';
 import { createElement, useSyncExternalStore } from 'react';
 import { Image, Platform, StyleSheet, Text, View, type ImageSourcePropType } from 'react-native';
 import { useTheme } from '../theme';
@@ -60,12 +61,15 @@ function subscribe(listener: () => void) {
   };
 }
 const getTick = () => tickCount;
+const subscribeNothing = () => () => {};
 
 /** 번호 순서대로 1.5초마다 이미지를 돌려 보여준다. 모든 프레임을 미리 그려두고 투명도만 바꿔서 깜빡임을 막는다. */
 export function ExerciseImageLoop({ images, width }: { images: ImageSourcePropType[]; width?: number }) {
   const t = useTheme();
   const count = images.length;
-  const tick = useSyncExternalStore(subscribe, getTick);
+  // 배우기 탭이 보이지 않을 때는 타이머를 구독하지 않아서 백그라운드에서 이미지 목록이 계속 다시 그려지지 않는다
+  const focused = useIsFocused();
+  const tick = useSyncExternalStore(focused ? subscribe : subscribeNothing, getTick);
   const frame = count > 1 ? tick % count : 0;
 
   // width를 주면 그 크기의 작은 썸네일(목록용), 안 주면 화면 너비에 맞춘다(상세용)

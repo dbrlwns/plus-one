@@ -1,3 +1,4 @@
+import { requireOptionalNativeModule } from 'expo';
 import { Platform } from 'react-native';
 
 type NotificationsModule = typeof import('expo-notifications');
@@ -9,6 +10,9 @@ export const REST_WARNING_LEAD_SEC = 10;
 let granted = false;
 let scheduledId: string | null = null;
 
+// expo-notifications가 불러올 때 필요한 네이티브 모듈 (이 앱의 빌드에 포함되어 있어야 알림을 쓸 수 있다)
+const NATIVE_MODULES = ['ExpoTopicSubscriptionModule', 'ExpoNotificationScheduler', 'ExpoNotificationPermissionsModule'];
+
 let loaded: NotificationsModule | null | undefined;
 
 /**
@@ -18,6 +22,8 @@ let loaded: NotificationsModule | null | undefined;
 function getNotifications(): NotificationsModule | null {
   if (loaded !== undefined) return loaded;
   if (Platform.OS === 'web') return (loaded = null);
+  // 네이티브 모듈이 없는 빌드에서는 require 자체가 에러(+ 개발 화면의 빨간 로그)를 내므로 먼저 확인하고 건너뛴다.
+  if (!NATIVE_MODULES.every((name) => requireOptionalNativeModule(name))) return (loaded = null);
   try {
     const mod: NotificationsModule = require('expo-notifications');
     // 앱이 화면에 떠 있을 때는 앱 안의 소리/진동이 있으니 알림 배너는 띄우지 않는다.

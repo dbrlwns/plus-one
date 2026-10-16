@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -13,16 +13,17 @@ import { useBackPress } from '../../src/hooks/useBackPress';
 import { useAppData } from '../../src/state/AppData';
 import { newItemId } from '../../src/storage/storage';
 import { useTheme } from '../../src/theme';
-import type { RoutineDay } from '../../src/types';
+import type { Routine, RoutineDay, RoutineItem } from '../../src/types';
 import { weekdayIndex } from '../../src/utils/date';
 
 export default function RoutineScreen() {
-  const { routine } = useAppData();
+  const { routine, setRoutine } = useAppData();
   const [dayIdx, setDayIdx] = useState(() => weekdayIndex(new Date()));
   const [picking, setPicking] = useState(false);
-  const [pageWidth, setPageWidth] = useState(0);
+  const [size, setSize] = useState({ width: 0, height: 0 });
   const pager = useRef<ScrollView>(null);
   const placed = useRef(false);
+  const pageWidth = size.width;
 
   // 운동 추가 목록이 열려 있으면 뒤로가기로 먼저 닫는다
   useBackPress(() => {
@@ -55,6 +56,9 @@ export default function RoutineScreen() {
     }
   };
 
+  const togglePicking = useCallback(() => setPicking((v) => !v), []);
+  const closePicking = useCallback(() => setPicking(false), []);
+
   return (
     <Screen>
       <View style={styles.header}>
@@ -68,7 +72,10 @@ export default function RoutineScreen() {
         </View>
       </View>
 
-      <View style={{ flex: 1 }} onLayout={(e) => setPageWidth(e.nativeEvent.layout.width)}>
+      <View
+        style={{ flex: 1 }}
+        onLayout={(e) => setSize({ width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height })}
+      >
         {pageWidth > 0 ? (
           <ScrollView
             ref={pager}
@@ -79,12 +86,15 @@ export default function RoutineScreen() {
             onScroll={onScroll}
           >
             {WEEKDAYS.map((_, i) => (
-              <View key={i} style={{ width: pageWidth }}>
+              // 페이지 높이를 고정해야 안쪽 세로 스크롤이 제대로 동작한다
+              <View key={i} style={{ width: pageWidth, height: size.height }}>
                 <DayPage
                   dayIdx={i}
+                  day={routine[i]}
+                  setRoutine={setRoutine}
                   picking={picking && i === dayIdx}
-                  onTogglePicking={() => setPicking((v) => !v)}
-                  onClosePicking={() => setPicking(false)}
+                  onTogglePicking={togglePicking}
+                  onClosePicking={closePicking}
                 />
               </View>
             ))}
@@ -95,23 +105,32 @@ export default function RoutineScreen() {
   );
 }
 
-function DayPage({
+/**
+ * 한 요일 페이지. day 객체가 바뀐 요일만 다시 그려진다 (memo).
+ * 버튼 하나를 눌러도 7개 요일 전체가 다시 그려지면 렉이 심해지기 때문이다.
+ */
+const DayPage = memo(function DayPage({
   dayIdx,
+  day,
+  setRoutine,
   picking,
   onTogglePicking,
   onClosePicking,
 }: {
   dayIdx: number;
+  day: RoutineDay;
+  /** context를 직접 구독하면 memo가 소용없어서(값이 바뀔 때마다 전부 다시 그려짐) 부모에서 받는다 */
+  setRoutine: (next: Routine | ((prev: Routine) => Routine)) => void;
   picking: boolean;
   onTogglePicking: () => void;
   onClosePicking: () => void;
 }) {
-  const t = useTheme();
-  const { routine, setRoutine } = useAppData();
-  const day = routine[dayIdx];
 
-  const patchDay = (patch: (d: RoutineDay) => RoutineDay) =>
-    setRoutine((prev) => prev.map((d, i) => (i === dayIdx ? patch(d) : d)));
+  const patchDay = useCallback(
+    (patch: (d: RoutineDay) => RoutineDay) =>
+      setRoutine((prev) => prev.map((d, i) => (i === dayIdx ? patch(d) : d))),
+    [dayIdx, setRoutine],
+  );
 
   const setPart = (part: Part) => {
     patchDay((d) => ({ ...d, part }));
@@ -127,19 +146,28 @@ function DayPage({
     }));
   };
 
-  const updateItem = (id: string, patch: { sets?: number; target?: number }) =>
-    patchDay((d) => ({ ...d, items: d.items.map((it) => (it.id === id ? { ...it, ...patch } : it)) }));
+  const updateItem = useCallback(
+    (id: string, patch: { sets?: number; target?: number }) =>
+      patchDay((d) => ({ ...d, items: d.items.map((it) => (it.id === id ? { ...it, ...patch } : it)) })),
+    [patchDay],
+  );
 
-  const moveItem = (index: number, delta: number) =>
-    patchDay((d) => {
-      const items = d.items.slice();
-      const j = index + delta;
-      if (j < 0 || j >= items.length) return d;
-      [items[index], items[j]] = [items[j], items[index]];
-      return { ...d, items };
-    });
+  const moveItem = useCallback(
+    (index: number, delta: number) =>
+      patchDay((d) => {
+        const items = d.items.slice();
+        const j = index + delta;
+        if (j < 0 || j >= items.length) return d;
+        [items[index], items[j]] = [items[j], items[index]];
+        return { ...d, items };
+      }),
+    [patchDay],
+  );
 
-  const removeItem = (id: string) => patchDay((d) => ({ ...d, items: d.items.filter((it) => it.id !== id) }));
+  const removeItem = useCallback(
+    (id: string) => patchDay((d) => ({ ...d, items: d.items.filter((it) => it.id !== id) })),
+    [patchDay],
+  );
 
   const isRest = day.part === '휴식';
   const pool = exercisesForPart(day.part);
@@ -168,37 +196,17 @@ function DayPage({
             </Card>
           ) : null}
 
-          {day.items.map((item, i) => {
-            const ex = getExercise(item.exerciseId);
-            if (!ex) return null;
-            const isTime = ex.type === 'time';
-            return (
-              <Card key={item.id} style={{ gap: 10 }}>
-                <View style={styles.titleRow}>
-                  <Text style={{ color: t.text, fontSize: 17, fontWeight: '800', flex: 1 }}>
-                    {i + 1}. {ex.name}
-                  </Text>
-                  <Btn title="↑" kind="secondary" size="sm" disabled={i === 0} onPress={() => moveItem(i, -1)} />
-                  <Btn
-                    title="↓"
-                    kind="secondary"
-                    size="sm"
-                    disabled={i === day.items.length - 1}
-                    onPress={() => moveItem(i, 1)}
-                  />
-                  <Btn title="삭제" kind="ghost" size="sm" onPress={() => removeItem(item.id)} />
-                </View>
-                <Stepper label="세트" value={item.sets} unit="세트" onChange={(sets) => updateItem(item.id, { sets })} />
-                <Stepper
-                  label={isTime ? '시간' : '반복'}
-                  value={item.target}
-                  unit={unitOf(ex.type)}
-                  step={isTime ? 5 : 1}
-                  onChange={(target) => updateItem(item.id, { target })}
-                />
-              </Card>
-            );
-          })}
+          {day.items.map((item, i) => (
+            <ItemCard
+              key={item.id}
+              item={item}
+              index={i}
+              isLast={i === day.items.length - 1}
+              onUpdate={updateItem}
+              onMove={moveItem}
+              onRemove={removeItem}
+            />
+          ))}
 
           <Btn
             title={picking ? '닫기' : '+ 운동 추가'}
@@ -225,7 +233,50 @@ function DayPage({
       )}
     </ScrollView>
   );
-}
+});
+
+/** 운동 카드 하나. item이 그대로면(다른 카드를 눌렀을 때) 다시 그려지지 않는다. */
+const ItemCard = memo(function ItemCard({
+  item,
+  index,
+  isLast,
+  onUpdate,
+  onMove,
+  onRemove,
+}: {
+  item: RoutineItem;
+  index: number;
+  isLast: boolean;
+  onUpdate: (id: string, patch: { sets?: number; target?: number }) => void;
+  onMove: (index: number, delta: number) => void;
+  onRemove: (id: string) => void;
+}) {
+  const t = useTheme();
+  const ex = getExercise(item.exerciseId);
+  if (!ex) return null;
+  const isTime = ex.type === 'time';
+
+  return (
+    <Card style={{ gap: 10 }}>
+      <View style={styles.titleRow}>
+        <Text style={{ color: t.text, fontSize: 17, fontWeight: '800', flex: 1 }}>
+          {index + 1}. {ex.name}
+        </Text>
+        <Btn title="↑" kind="secondary" size="sm" disabled={index === 0} onPress={() => onMove(index, -1)} />
+        <Btn title="↓" kind="secondary" size="sm" disabled={isLast} onPress={() => onMove(index, 1)} />
+        <Btn title="삭제" kind="ghost" size="sm" onPress={() => onRemove(item.id)} />
+      </View>
+      <Stepper label="세트" value={item.sets} unit="세트" onChange={(sets) => onUpdate(item.id, { sets })} />
+      <Stepper
+        label={isTime ? '시간' : '반복'}
+        value={item.target}
+        unit={unitOf(ex.type)}
+        step={isTime ? 5 : 1}
+        onChange={(target) => onUpdate(item.id, { target })}
+      />
+    </Card>
+  );
+});
 
 const styles = StyleSheet.create({
   header: { paddingHorizontal: 16, paddingTop: 16, gap: 14 },

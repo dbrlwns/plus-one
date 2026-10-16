@@ -15,6 +15,8 @@ export default function TabsLayout() {
       backBehavior="none"
       screenOptions={{
         headerShown: false,
+        // 안 보이는 탭은 얼려서 루틴을 고칠 때 달력/운동 탭까지 다시 그려지지 않게 한다
+        freezeOnBlur: true,
         tabBarActiveTintColor: t.primary,
         tabBarInactiveTintColor: t.subtext,
         tabBarStyle: { backgroundColor: t.card, borderTopColor: t.border },

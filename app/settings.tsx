@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Body, Btn, Card, Heading, Screen, Sub } from '../src/components/ui';
+import { getExercise, unitOf } from '../src/data/exercises';
+import { ROUTINE_PRESETS, presetToRoutine, type RoutinePreset } from '../src/data/routinePresets';
 import { useAppData } from '../src/state/AppData';
 import { useTheme } from '../src/theme';
-import { confirmAction } from '../src/utils/confirm';
+import { confirmAction, notify } from '../src/utils/confirm';
+import { WEEKDAYS } from '../src/data/exercises';
 
 function NumberField({
   label,
@@ -48,7 +51,14 @@ export default function SettingsScreen() {
   const router = useRouter();
   // 스택 화면이라 안드로이드 뒤로가기는 기본 동작(이전 화면으로)을 쓴다
   const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
-  const { settings, updateSettings, resetAll } = useAppData();
+  const { settings, updateSettings, resetAll, setRoutine } = useAppData();
+  const [openPreset, setOpenPreset] = useState<string | null>(null);
+
+  const loadPreset = (preset: RoutinePreset) =>
+    confirmAction('루틴 불러오기', `지금 루틴이 "${preset.name}"(으)로 바뀝니다. 계속할까요?`, () => {
+      setRoutine(presetToRoutine(preset));
+      notify('불러왔어요', '루틴 탭에서 확인하고 고칠 수 있어요.');
+    });
 
   return (
     <Screen>
@@ -79,6 +89,52 @@ export default function SettingsScreen() {
         </Card>
 
         <Card style={{ gap: 10 }}>
+          <Body style={{ fontWeight: '700' }}>루틴 불러오기</Body>
+          <Sub>미리 만들어 둔 루틴을 골라 불러올 수 있어요. 불러오면 지금 루틴이 바뀌고, 운동 기록은 그대로예요.</Sub>
+          {ROUTINE_PRESETS.map((p) => {
+            const open = openPreset === p.id;
+            return (
+              <View key={p.id} style={[styles.preset, { borderColor: t.border }]}>
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={() => setOpenPreset(open ? null : p.id)}
+                  style={styles.presetHead}
+                >
+                  <View style={{ flex: 1, gap: 2 }}>
+                    <Text style={{ color: t.text, fontSize: 16, fontWeight: '800' }}>{p.name}</Text>
+                    <Sub>{p.summary}</Sub>
+                  </View>
+                  <Text style={{ color: t.subtext, fontSize: 18 }}>{open ? '∧' : '∨'}</Text>
+                </Pressable>
+
+                {open ? (
+                  <View style={{ gap: 8, marginTop: 6 }}>
+                    <Sub>{p.description}</Sub>
+                    {p.days.map((d, i) => (
+                      <View key={i} style={{ gap: 2 }}>
+                        <Text style={{ color: t.text, fontWeight: '700' }}>
+                          {WEEKDAYS[i]} · {d.part}
+                        </Text>
+                        {d.items.map(([id, sets, target], j) => {
+                          const ex = getExercise(id);
+                          return (
+                            <Sub key={j}>
+                              {ex?.name ?? id} {sets}세트 × {target}
+                              {ex ? unitOf(ex.type) : ''}
+                            </Sub>
+                          );
+                        })}
+                      </View>
+                    ))}
+                    <Btn title="이 루틴 불러오기" onPress={() => loadPreset(p)} />
+                  </View>
+                ) : null}
+              </View>
+            );
+          })}
+        </Card>
+
+        <Card style={{ gap: 10 }}>
           <Body style={{ fontWeight: '700' }}>데이터</Body>
           <Sub>설정, 루틴, 운동 기록을 모두 지우고 처음 상태로 되돌립니다.</Sub>
           <Btn
@@ -98,6 +154,8 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   content: { padding: 16, gap: 16 },
+  preset: { borderWidth: 1, borderRadius: 12, padding: 12 },
+  presetHead: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   input: { borderWidth: 1, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, fontSize: 16 },

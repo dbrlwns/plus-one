@@ -1,4 +1,4 @@
-import { requireOptionalNativeModule } from 'expo';
+import { isRunningInExpoGo, requireOptionalNativeModule } from 'expo';
 import { Platform } from 'react-native';
 
 type NotificationsModule = typeof import('expo-notifications');
@@ -89,5 +89,47 @@ export async function cancelRestWarning(): Promise<void> {
     await Notifications.cancelScheduledNotificationAsync(id);
   } catch {
     // ignore
+  }
+}
+
+export interface NotificationTestResult {
+  ok: boolean;
+  message: string;
+}
+
+const TEST_DELAY_SEC = 8;
+
+/**
+ * 알림이 실제로 되는지 확인한다. 왜 안 되는지(웹/Expo Go/빌드에 모듈 없음/권한 거부)도 알려준다.
+ * 성공하면 TEST_DELAY_SEC초 뒤에 알림이 예약된다. (앱이 화면에 떠 있을 때는 배너를 숨기므로 홈 버튼으로 앱을 내려야 보인다)
+ */
+export async function sendTestNotification(): Promise<NotificationTestResult> {
+  if (Platform.OS === 'web') {
+    return { ok: false, message: '웹에서는 휴대폰 알림을 쓸 수 없어요. 휴대폰에 설치한 앱(개발 빌드)에서 테스트해 주세요.' };
+  }
+  const Notifications = getNotifications();
+  if (!Notifications) {
+    return {
+      ok: false,
+      message: isRunningInExpoGo()
+        ? 'Expo Go에서는 알림 기능을 쓸 수 없어요. 개발 빌드로 설치한 앱에서 테스트해 주세요.'
+        : '이 앱 빌드에는 알림 기능이 들어 있지 않아요. 새로 빌드해서 설치해 주세요.',
+    };
+  }
+  if (!(await setupRestNotifications())) {
+    return { ok: false, message: '알림 권한이 꺼져 있어요. 휴대폰 설정에서 이 앱의 알림을 허용해 주세요.' };
+  }
+  try {
+    await Notifications.scheduleNotificationAsync({
+      content: { title: '알림 테스트', body: '알림이 정상으로 동작해요!', sound: true },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+        seconds: TEST_DELAY_SEC,
+        channelId: CHANNEL_ID,
+      },
+    });
+    return { ok: true, message: `${TEST_DELAY_SEC}초 뒤에 알림을 보내요. 지금 홈 버튼으로 앱을 내려 보세요.` };
+  } catch (e) {
+    return { ok: false, message: `알림 예약에 실패했어요: ${e instanceof Error ? e.message : String(e)}` };
   }
 }

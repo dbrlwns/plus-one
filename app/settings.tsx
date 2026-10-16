@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { BackHandler, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Body, Btn, Card, Chip, Heading, Screen, Sub } from '../src/components/ui';
 import { getExercise, unitOf } from '../src/data/exercises';
 import { ROUTINE_PRESETS, presetToRoutine, type RoutinePreset } from '../src/data/routinePresets';
+import { sendTestNotification, type NotificationTestResult } from '../src/notifications';
 import { useAppData } from '../src/state/AppData';
 import { useTheme } from '../src/theme';
 import { confirmAction, notify } from '../src/utils/confirm';
@@ -15,50 +16,71 @@ const THEME_OPTIONS: { value: 'system' | 'light' | 'dark'; label: string }[] = [
   { value: 'dark', label: '다크' },
 ];
 
-function NumberField({
-  label,
-  unit,
-  value,
-  onCommit,
-}: {
-  label: string;
-  unit: string;
-  value: number;
-  onCommit: (v: number) => void;
-}) {
-  const t = useTheme();
-  const [text, setText] = useState(String(value));
-  useEffect(() => setText(String(value)), [value]);
-
-  const commit = () => {
-    const n = parseInt(text, 10);
-    if (Number.isFinite(n) && n >= 1) onCommit(n);
-    else setText(String(value));
-  };
-
-  return (
-    <View style={styles.row}>
-      <Body style={{ flex: 1 }}>{label}</Body>
-      <TextInput
-        value={text}
-        onChangeText={(v) => setText(v.replace(/[^0-9]/g, ''))}
-        onBlur={commit}
-        onSubmitEditing={commit}
-        keyboardType="number-pad"
-        style={[styles.input, { color: t.text, borderColor: t.border, backgroundColor: t.bg, width: 80, textAlign: 'right' }]}
-      />
-      <Text style={{ color: t.subtext, width: 24 }}>{unit}</Text>
-    </View>
-  );
-}
-
 export default function SettingsScreen() {
   const t = useTheme();
   const router = useRouter();
-  // 스택 화면이라 안드로이드 뒤로가기는 기본 동작(이전 화면으로)을 쓴다
-  const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const { settings, updateSettings, resetAll, setRoutine } = useAppData();
   const [openPreset, setOpenPreset] = useState<string | null>(null);
+  const [testResult, setTestResult] = useState<NotificationTestResult | null>(null);
+  const [testing, setTesting] = useState(false);
+
+  const runNotificationTest = async () => {
+    setTesting(true);
+    setTestResult(await sendTestNotification());
+    setTesting(false);
+  };
+
+  // 이름/휴식시간은 입력 중에는 임시 값으로 두고, [저장하기]를 눌러야 저장한다
+  const [name, setName] = useState(settings.name);
+  const [restText, setRestText] = useState(String(settings.restSec));
+  const [justSaved, setJustSaved] = useState(false);
+  useEffect(() => {
+    // 데이터 초기화처럼 밖에서 값이 바뀌면 입력칸도 맞춘다
+    setName(settings.name);
+    setRestText(String(settings.restSec));
+  }, [settings.name, settings.restSec]);
+
+  const restNum = parseInt(restText, 10);
+  const restValid = Number.isFinite(restNum) && restNum >= 1;
+  const dirty =
+    name.trim() !== settings.name || (restValid ? restNum !== settings.restSec : restText !== String(settings.restSec));
+
+  const save = () => {
+    if (!restValid) {
+      notify('저장할 수 없어요', '기본 휴식시간은 1초 이상으로 입력해 주세요.');
+      return;
+    }
+    updateSettings({ name: name.trim(), restSec: restNum });
+    setName(name.trim());
+    setJustSaved(true);
+  };
+  useEffect(() => {
+    if (!justSaved) return;
+    const id = setTimeout(() => setJustSaved(false), 1500);
+    return () => clearTimeout(id);
+  }, [justSaved]);
+
+  const leave = () => (router.canGoBack() ? router.back() : router.replace('/'));
+  // 저장하지 않은 변경이 있으면 나가기 전에 한 번 물어본다
+  const goBack = () => {
+    if (!dirty) return leave();
+    confirmAction('저장하지 않았어요', '변경한 내용을 저장하지 않고 나갈까요?', leave);
+  };
+  const goBackRef = useRef(goBack);
+  goBackRef.current = goBack;
+  const dirtyRef = useRef(dirty);
+  dirtyRef.current = dirty;
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS !== 'android') return;
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+        if (!dirtyRef.current) return false; // 저장할 게 없으면 기본 동작(이전 화면)
+        goBackRef.current();
+        return true;
+      });
+      return () => sub.remove();
+    }, []),
+  );
 
   const loadPreset = (preset: RoutinePreset) =>
     confirmAction('루틴 불러오기', `지금 루틴이 "${preset.name}"(으)로 바뀝니다. 계속할까요?`, () => {
@@ -78,20 +100,29 @@ export default function SettingsScreen() {
           <View style={styles.row}>
             <Body style={{ flex: 1 }}>이름</Body>
             <TextInput
-              value={settings.name}
-              onChangeText={(name) => updateSettings({ name })}
+              value={name}
+              onChangeText={setName}
               placeholder="이름 입력"
               placeholderTextColor={t.subtext}
               style={[styles.input, { color: t.text, borderColor: t.border, backgroundColor: t.bg, flex: 2 }]}
             />
           </View>
-          <NumberField
-            label="기본 휴식시간"
-            unit="초"
-            value={settings.restSec}
-            onCommit={(restSec) => updateSettings({ restSec })}
-          />
+          <View style={styles.row}>
+            <Body style={{ flex: 1 }}>기본 휴식시간</Body>
+            <TextInput
+              value={restText}
+              onChangeText={(v) => setRestText(v.replace(/[^0-9]/g, ''))}
+              keyboardType="number-pad"
+              style={[styles.input, { color: t.text, borderColor: t.border, backgroundColor: t.bg, width: 80, textAlign: 'right' }]}
+            />
+            <Text style={{ color: t.subtext, width: 24 }}>초</Text>
+          </View>
           <Sub>반복 템포(기본 3초)는 운동 중 화면에서 바로 조절하며, 운동별로 저장됩니다.</Sub>
+          <Btn
+            title={justSaved ? '저장했어요 ✓' : dirty ? '저장하기' : '저장됨'}
+            disabled={!dirty && !justSaved}
+            onPress={save}
+          />
         </Card>
 
         <Card style={{ gap: 10 }}>
@@ -108,6 +139,17 @@ export default function SettingsScreen() {
             ))}
           </View>
           <Sub>"시스템"은 휴대폰의 라이트/다크 설정을 따라가요.</Sub>
+        </Card>
+
+        <Card style={{ gap: 10 }}>
+          <Body style={{ fontWeight: '700' }}>알림 테스트</Body>
+          <Sub>휴식 종료 10초 전 알림이 오는지 확인해요. 누른 뒤 홈 버튼으로 앱을 내리면 8초 뒤에 알림이 와요.</Sub>
+          <Btn title={testing ? '확인 중…' : '알림 테스트'} kind="secondary" disabled={testing} onPress={runNotificationTest} />
+          {testResult ? (
+            <Text style={{ color: testResult.ok ? t.success : t.danger, fontSize: 14, lineHeight: 20 }}>
+              {testResult.message}
+            </Text>
+          ) : null}
         </Card>
 
         <Card style={{ gap: 10 }}>

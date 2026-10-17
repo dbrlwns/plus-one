@@ -8,7 +8,8 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.plusone.homefitness"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,7 +24,7 @@
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ],
-      "package": "com.anonymous.plusone"
+      "package": "com.plusone.homefitness"
     },
     "web": {
       "bundler": "metro",

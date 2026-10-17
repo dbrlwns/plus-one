@@ -31,6 +31,10 @@ export interface WorkoutState {
   restSec: number;
   /** 운동별 템포(초). 없는 운동은 DEFAULT_TEMPO */
   tempos: Record<string, number>;
+  /** 일시정지 중이면 시간이 흐르지 않고 진행 버튼도 막힌다 */
+  paused: boolean;
+  /** 휴식이 시작되거나 길어질 때마다 1씩 오른다 (예약 알림을 다시 잡을 때 쓴다) */
+  restSeq: number;
   /** 0.5초 틱 중 현재가 초의 두 번째 틱이면 1 */
   half: 0 | 1;
   phase: Phase;
@@ -57,6 +61,8 @@ export type WorkoutAction =
   | { type: 'SKIP_REST' }
   | { type: 'CONFIRM_NEXT' }
   | { type: 'RESET_SET' }
+  | { type: 'PAUSE' }
+  | { type: 'RESUME' }
   /** 지금 하는 운동의 템포를 바꾼다 */
   | { type: 'SET_TEMPO'; tempoSec: number }
   | { type: 'ABORT' };
@@ -75,6 +81,8 @@ export function createInitialState(
     plan,
     restSec,
     tempos,
+    paused: false,
+    restSeq: 0,
     half: 0,
     phase: 'ready',
     exIdx: 0,
@@ -116,7 +124,7 @@ function finishSet(state: WorkoutState, actual: number): WorkoutState {
   if (isLastSet(state) && isLastExercise(state)) {
     return withCue({ ...next, phase: 'summary' }, 'finish');
   }
-  return withCue({ ...next, phase: 'rest', restLeft: state.restSec }, 'setDone');
+  return withCue({ ...next, phase: 'rest', restLeft: state.restSec, restSeq: state.restSeq + 1 }, 'setDone');
 }
 
 function endRest(state: WorkoutState): WorkoutState {
@@ -173,7 +181,25 @@ function tick(state: WorkoutState): WorkoutState {
   }
 }
 
+/** 일시정지할 수 있는 단계 (카운트다운/운동 중/휴식) */
+export function canPause(state: WorkoutState): boolean {
+  return state.phase === 'countdown' || state.phase === 'active' || state.phase === 'rest';
+}
+
 export function workoutReducer(state: WorkoutState, action: WorkoutAction): WorkoutState {
+  if (action.type === 'PAUSE') return canPause(state) && !state.paused ? { ...state, paused: true } : state;
+  if (action.type === 'RESUME') return state.paused ? { ...state, paused: false } : state;
+  if (state.paused) {
+    // 일시정지 중에는 시간과 진행 버튼을 막고, 세트 다시 하기/운동 종료만 허용한다
+    if (action.type === 'RESET_SET' || action.type === 'ABORT') {
+      return workoutReducerInner({ ...state, paused: false }, action);
+    }
+    return state;
+  }
+  return workoutReducerInner(state, action);
+}
+
+function workoutReducerInner(state: WorkoutState, action: WorkoutAction): WorkoutState {
   switch (action.type) {
     case 'START':
       if (state.phase !== 'ready') return state;
@@ -183,7 +209,9 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
     case 'END_SET':
       return state.phase === 'active' ? finishSet(state, state.count) : state;
     case 'ADD_REST':
-      return state.phase === 'rest' ? { ...state, restLeft: state.restLeft + action.sec } : state;
+      return state.phase === 'rest'
+        ? { ...state, restLeft: state.restLeft + action.sec, restSeq: state.restSeq + 1 }
+        : state;
     case 'SKIP_REST':
       return state.phase === 'rest' ? endRest({ ...state, restLeft: 0 }) : state;
     case 'CONFIRM_NEXT':
@@ -199,6 +227,9 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
       const id = state.plan[state.exIdx].exerciseId;
       return { ...state, tempos: { ...state.tempos, [id]: clampTempo(action.tempoSec) } };
     }
+    case 'PAUSE':
+    case 'RESUME':
+      return state;
     case 'ABORT': {
       if (state.phase === 'summary') return state;
       // 세트 도중에 끝내면 지금까지 한 반복 수도 기록한다
@@ -217,7 +248,7 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
  * 휴식 중이고 남은 시간이 lead초보다 길 때만 있다 (seconds = 지금부터 알림까지 남은 초).
  */
 export function restWarningInfo(state: WorkoutState, leadSec: number): { seconds: number; body: string } | null {
-  if (state.phase !== 'rest' || state.restLeft <= leadSec) return null;
+  if (state.paused || state.phase !== 'rest' || state.restLeft <= leadSec) return null;
   const item = state.plan[state.exIdx];
   const next = state.plan[state.exIdx + 1];
   const body =

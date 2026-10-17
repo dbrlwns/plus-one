@@ -123,16 +123,28 @@ export default function WorkoutScreen() {
               <Sub>루틴 탭에서 운동을 추가하거나, 아래의 "자유 운동 하기"를 눌러보세요.</Sub>
             </Card>
           ) : (
-            plan.map((p, i) => (
-              <Card key={i} style={styles.planRow}>
-                <Text style={{ color: t.subtext, fontWeight: '800', width: 22 }}>{i + 1}</Text>
-                <Text style={{ color: t.text, fontSize: 17, fontWeight: '700', flex: 1 }}>{p.name}</Text>
-                <Sub>
-                  {p.sets}세트 × {p.target}
-                  {unitOf(p.type)}
-                </Sub>
-              </Card>
-            ))
+            <>
+              <Sub style={{ textAlign: 'center' }}>운동을 누르면 그 운동만 시작하고, 아래 시작을 누르면 전체를 이어서 해요.</Sub>
+              {plan.map((p, i) => (
+              // 운동 카드를 누르면 그 운동만 따로 시작한다
+              <Pressable
+                key={i}
+                accessibilityRole="button"
+                accessibilityLabel={`${p.name}만 시작`}
+                onPress={() => setMode({ kind: 'session', plan: [p], key: Date.now() })}
+              >
+                <Card style={styles.planRow}>
+                  <Text style={{ color: t.subtext, fontWeight: '800', width: 22 }}>{i + 1}</Text>
+                  <Text style={{ color: t.text, fontSize: 17, fontWeight: '700', flex: 1 }}>{p.name}</Text>
+                  <Sub>
+                    {p.sets}세트 × {p.target}
+                    {unitOf(p.type)}
+                  </Sub>
+                  <Text style={{ color: t.primary, fontSize: 14, fontWeight: '800' }}>시작 ›</Text>
+                </Card>
+              </Pressable>
+              ))}
+            </>
           )}
         </ScrollView>
       </View>

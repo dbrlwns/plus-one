@@ -11,6 +11,7 @@ import { formatClock, formatDuration } from '../utils/date';
 import { confirmAction } from '../utils/confirm';
 import {
   buildRecord,
+  canPause,
   createInitialState,
   isLastExercise,
   isLastSet,
@@ -69,7 +70,7 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
     dispatch({ type: 'START', now: Date.now() });
   }, []);
 
-  const ticking = state.phase === 'countdown' || state.phase === 'active' || state.phase === 'rest';
+  const ticking = (state.phase === 'countdown' || state.phase === 'active' || state.phase === 'rest') && !state.paused;
   useTicker(ticking, () => dispatch({ type: 'TICK' }));
 
   // 소리/진동
@@ -207,7 +208,16 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
       ) : null}
 
       <View style={styles.center}>
-        {state.phase === 'ready' && (
+        {state.paused ? (
+          <>
+            <Text style={[styles.label, { color: t.subtext }]}>일시정지</Text>
+            <Text style={[styles.pausedIcon, { color: t.warn }]}>❚❚</Text>
+            <Sub style={{ fontSize: 16 }}>
+              {state.phase === 'rest' ? `휴식 ${formatClock(state.restLeft)} 남음` : `${setLabel} · ${state.count}/${item.target}${unit}`}
+            </Sub>
+          </>
+        ) : null}
+        {!state.paused && state.phase === 'ready' && (
           <>
             <Text style={[styles.label, { color: t.subtext }]}>{setLabel}</Text>
             <Text style={[styles.mid, { color: t.text }]}>
@@ -220,14 +230,14 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
           </>
         )}
 
-        {state.phase === 'countdown' && (
+        {!state.paused && state.phase === 'countdown' && (
           <>
             <Text style={[styles.label, { color: t.subtext }]}>{setLabel} 준비</Text>
             <Text style={[styles.huge, { color: t.warn }]}>{state.countdown}</Text>
           </>
         )}
 
-        {state.phase === 'active' && (
+        {!state.paused && state.phase === 'active' && (
           <>
             <Text style={[styles.label, { color: t.subtext }]}>{setLabel}</Text>
             <Text style={[styles.huge, { color: t.primary }]}>{state.count}</Text>
@@ -238,7 +248,7 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
           </>
         )}
 
-        {state.phase === 'rest' && (
+        {!state.paused && state.phase === 'rest' && (
           <>
             <Text style={[styles.label, { color: t.subtext }]}>휴식</Text>
             <Text style={[styles.huge, styles.clock, { color: t.success }]}>{formatClock(state.restLeft)}</Text>
@@ -250,7 +260,7 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
           </>
         )}
 
-        {state.phase === 'transition' && (
+        {!state.paused && state.phase === 'transition' && (
           <>
             <Text style={[styles.label, { color: t.subtext }]}>{item.name} 완료!</Text>
             <Text style={[styles.mid, { color: t.subtext }]}>다음 운동</Text>
@@ -264,18 +274,27 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
       </View>
 
       <View style={styles.bottom}>
-        {state.phase === 'ready' && <Btn title="시작" size="xl" onPress={() => dispatch({ type: 'START', now: Date.now() })} />}
-        {state.phase === 'active' && (
-          <Btn title="여기서 종료" kind="secondary" size="xl" onPress={() => dispatch({ type: 'END_SET' })} />
-        )}
-        {state.phase === 'rest' && (
+        {state.paused ? (
+          <Btn title="재개" size="xl" onPress={() => dispatch({ type: 'RESUME' })} />
+        ) : (
           <>
-            <Btn title="+30초" kind="secondary" size="xl" onPress={() => dispatch({ type: 'ADD_REST', sec: 30 })} />
-            <Btn title="휴식 건너뛰기" size="xl" onPress={() => dispatch({ type: 'SKIP_REST' })} />
+            {state.phase === 'ready' && <Btn title="시작" size="xl" onPress={() => dispatch({ type: 'START', now: Date.now() })} />}
+            {state.phase === 'active' && (
+              <Btn title="여기서 종료" kind="secondary" size="xl" onPress={() => dispatch({ type: 'END_SET' })} />
+            )}
+            {state.phase === 'rest' && (
+              <>
+                <Btn title="+30초" kind="secondary" size="xl" onPress={() => dispatch({ type: 'ADD_REST', sec: 30 })} />
+                <Btn title="휴식 건너뛰기" size="xl" onPress={() => dispatch({ type: 'SKIP_REST' })} />
+              </>
+            )}
+            {state.phase === 'transition' && (
+              <Btn title="확인" size="xl" onPress={() => dispatch({ type: 'CONFIRM_NEXT' })} />
+            )}
+            {canPause(state) && (
+              <Btn title="일시정지" kind="secondary" onPress={() => dispatch({ type: 'PAUSE' })} />
+            )}
           </>
-        )}
-        {state.phase === 'transition' && (
-          <Btn title="확인" size="xl" onPress={() => dispatch({ type: 'CONFIRM_NEXT' })} />
         )}
         {state.phase !== 'ready' && (
           <Btn
@@ -292,6 +311,7 @@ export function WorkoutSession({ plan, onExit }: { plan: PlanItem[]; onExit: () 
 const styles = StyleSheet.create({
   wrap: { flex: 1, padding: 16 },
   top: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
+  pausedIcon: { fontSize: 96, fontWeight: '900' },
   exName: { fontSize: 28, fontWeight: '800', marginTop: 2 },
   exNext: { fontSize: 36, fontWeight: '900', textAlign: 'center' },
   tempoRow: {

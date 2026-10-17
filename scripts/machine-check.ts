@@ -65,3 +65,18 @@ s = workoutReducer(s, { type: 'START', now: 1 }); tick(3); tick(3);   // 1회 = 
 console.log('rest start (90s) ->', JSON.stringify(restWarningInfo(s, 10)));
 tick(30); console.log('rest 60s left ->', JSON.stringify(restWarningInfo(s, 10)));
 tick(52); console.log('rest 8s left ->', JSON.stringify(restWarningInfo(s, 10)));
+
+// --- 일시정지/재개 ---
+s = createInitialState(plan3, 1);
+s = workoutReducer(s, { type: 'START', now: 1 }); tick(3);          // active
+tick(3);                                                           // 1회
+const before = JSON.stringify([s.count, s.elapsed, s.tempoElapsed]);
+s = workoutReducer(s, { type: 'PAUSE' });
+tick(10); s = workoutReducer(s, { type: 'END_SET' });               // 멈춘 동안 시간/버튼 무시
+console.log('paused: time frozen =', before === JSON.stringify([s.count, s.elapsed, s.tempoElapsed]), '| phase', s.phase, '| paused', s.paused);
+s = workoutReducer(s, { type: 'RESUME' }); tick(3);
+console.log('resumed: set finished after 3s more -> phase', s.phase, 'results', JSON.stringify(s.results));
+s = workoutReducer(s, { type: 'PAUSE' }); s = workoutReducer(s, { type: 'RESET_SET' });
+console.log('reset while paused -> paused', s.paused, 'phase', s.phase);
+s = createInitialState(plan3, 1);
+console.log('pause before start ignored:', workoutReducer(s, { type: 'PAUSE' }).paused === false);

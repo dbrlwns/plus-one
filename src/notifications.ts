@@ -53,6 +53,8 @@ export async function setupRestNotifications(): Promise<boolean> {
         importance: Notifications.AndroidImportance.HIGH,
       });
     }
+    // 앱이 닫히거나 꺼진 채로 남아 있던 예전 휴식 알림이 나중에 울리지 않도록 새 운동을 시작할 때 모두 지운다
+    await Notifications.cancelAllScheduledNotificationsAsync();
     const current = await Notifications.getPermissionsAsync();
     granted = current.granted || (current.canAskAgain && (await Notifications.requestPermissionsAsync()).granted);
   } catch {
